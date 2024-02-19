@@ -117,38 +117,38 @@ public class Bot2BFL extends LinearOpMode {
             //telemetry.update();
             telemetry.addData("april tag i hope ", a.getTag());
             telemetry.update();
-            findTag(a.getTag());
+            //findTag(a.getTag());
             m.placePixel();
         }
 
     }
-    public void findTag(int tag)
-    {
-        if(color!=1)
-        {
-            tag+=3;
-        }
-        if( a.getTag()== tag+3)
-        {
-            driveToTag();
-        }
-        else if(a.getTag()< tag)
-        {
-            m.rotate(-90);
-            m.forward(-10 );
-            m.rotate(-90);
-            findTag(tag);
-
-        }
-        else if(a.getTag()> tag)
-        {
-            m.rotate(90);
-            m.forward(10);
-            m.rotate(90);
-            findTag(tag);
-
-        }
-    }
+//    public void findTag(int tag)
+//    {
+//        if(color!=1)
+//        {
+//            tag+=3;
+//        }
+//        if( a.getTag()== tag+3)
+//        {
+//            driveToTag();
+//        }
+//        else if(a.getTag()< tag)
+//        {
+//            m.rotate(-90);
+//            m.forward(-10 );
+//            m.rotate(-90);
+//            findTag(tag);
+//
+//        }
+//        else if(a.getTag()> tag)
+//        {
+//            m.rotate(90);
+//            m.forward(10);
+//            m.rotate(90);
+//            findTag(tag);
+//
+//        }
+//    }
     // Drive up close to tag
     public void driveToTag()
     {
@@ -156,8 +156,8 @@ public class Bot2BFL extends LinearOpMode {
         double y = a.getY();
         double angle =  Math.tan(x/y);
         int length = (int) Math.sqrt(Math.pow(x,2)+Math.pow(y,2)); // set distance to travel as the hypotenuse of a triangle with x and y as sides
-        m.rotate((int) angle);
-        m.forward(length);
-        m.rotate(90+(int)angle);
+//        m.rotate((int) angle);
+//        m.forward(length);
+//        m.rotate(90+(int)angle);
     }
 }

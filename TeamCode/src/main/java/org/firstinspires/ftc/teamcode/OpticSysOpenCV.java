@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -52,6 +53,8 @@ public class OpticSysOpenCV {
                         2, //The number of sub-containers to create
                         OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
         //OpenCV Pipeline
+        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
+        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 
         // Configuration of Pipeline
         myPipeline1.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
@@ -90,17 +93,19 @@ public class OpticSysOpenCV {
         listenClose1 = new OpenCvCamera.AsyncCameraCloseListener() {
             @Override
             public void onClose() {
-                // webcam1.stopStreaming();
+                 webcam1.stopStreaming();
                 webcam1.stopRecordingPipeline();
                 webcam1.closeCameraDevice();
+
             }
         };
         listenClose2 = new OpenCvCamera.AsyncCameraCloseListener() {
             @Override
             public void onClose() {
-                // webcam2.stopStreaming();
+                 webcam2.stopStreaming();
                 webcam2.stopRecordingPipeline();
                 webcam2.closeCameraDevice();
+
             }
         };
     }
@@ -112,9 +117,17 @@ public class OpticSysOpenCV {
 
     public void closeOpenCV()
     {
+        webcam1.pauseViewport();
+        webcam1.stopRecordingPipeline();
+        webcam1.closeCameraDevice();
+        webcam2.pauseViewport();
+        webcam2.stopRecordingPipeline();
+        webcam2.closeCameraDevice();
+
         webcam1.closeCameraDeviceAsync(listenClose1); // Empty camera
         webcam2.closeCameraDeviceAsync(listenClose2);
     }
+
 
     public int run()
     {
@@ -128,11 +141,11 @@ public class OpticSysOpenCV {
         if(myPipeline1.getRectHeight() > 50 || myPipeline2.getRectHeight() > 50 ){
 
             if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
-                return 1;
+                return 2;
             }
             if(myPipeline2.getRectArea()>myPipeline1.getRectArea())
             {
-                return 2;
+                return 1;
 
             }
         }

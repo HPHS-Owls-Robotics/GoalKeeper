@@ -19,65 +19,80 @@ public class TESTAPRILTAG extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-            m= new Bot2MoveSys(hardwareMap);
-            as = new ArmSys(hardwareMap);
+           m= new Bot2MoveSys(hardwareMap);
+           as = new ArmSys(hardwareMap);
             a= new OpticSysAprilTag(hardwareMap);
-            a.initAprilTag();
+            o= new OpticSysOpenCV(hardwareMap,1);
+            //a.initAprilTag();
+            o.initOpenCV();
+
+            int tag=0;
+            int go=0;
+
             waitForStart();
-
-            if(opModeIsActive()) {
-
-                telemetry.addData("current position", m.getCurrentTicks());
-                telemetry.addData("target position", m.forward(50));
+            if(opModeIsActive())
+            {
+                telemetry.addData("going", m.getCurrentTicks());
                 telemetry.update();
-
-                m.forward(20);
+                o.startOpenCV();
+                m.right(-24);
                 sleep(3000);
+                go= o.run();
 
-                //telemetry.update();
-                telemetry.addData("april tag i hope ", a.getTag());
-                telemetry.addData("distanceY", a.getY());
-                telemetry.addData("distanceX", a.getX());
-                telemetry.update();
-                m.right((int) a.getX());
-                m.forward(-(int)a.getY()+10);
+
+
+
+
+
+                o.closeOpenCV();
+
+                a.initAprilTag();
+                a.getTag();
+                telemetry.addData(String.valueOf(a.getTag()),a.getTag());
+
+
+                sleep(1000);
+
             }
-    }
-    public void findTag(int tag)
-    {
-        if(color!=1)
-        {
-            tag+=3;
-        }
-        if( a.getTag()== tag+3)
-        {
-            driveToTag();
-        }
-        else if(a.getTag()< tag)
-        {
-            m.rotate(90);
-            m.forward(-10 );
-            m.rotate(90);
-            findTag(tag);
 
-        }
-        else if(a.getTag()> tag)
-        {
-            m.rotate(-90);
-            m.forward(10);
-            m.rotate(-90);
-            findTag(tag);
-        }
+
     }
+
+//    public void findTag(int tag)
+//    {
+//        if(color!=1)
+//        {
+//            tag+=3;
+//        }
+//        if( a.getTag()== tag+3)
+//        {
+//            driveToTag();
+//        }
+//        else if(a.getTag()< tag)
+//        {
+//            m.rotate(90);
+//            m.forward(-10 );
+//            m.rotate(90);
+//            findTag(tag);
+//
+//        }
+//        else if(a.getTag()> tag)
+//        {
+//            m.rotate(-90);
+//            m.forward(10);
+//            m.rotate(-90);
+//            findTag(tag);
+//        }
+//    }
     // Drive up close to tag
-    public void driveToTag()
-    {
-        double x = a.getX();
-        double y = a.getY();
-        double angle =  Math.tan(x/y);
-        int length = (int)Math.sqrt(Math.pow(x,2)+Math.pow(y,2)); // set distance to travel as the hypotenuse of a triangle with x and y as sides
-        m.rotate((int) angle);
-        m.forward(length);
-        m.rotate(-90+(int)angle);
-    }
+//    public void driveToTag()
+//    {
+//        double x = a.getX();
+//        double y = a.getY();
+//        double angle =  Math.tan(x/y);
+//        int length = (int)Math.sqrt(Math.pow(x,2)+Math.pow(y,2)); // set distance to travel as the hypotenuse of a triangle with x and y as sides
+//        m.rotate((int) angle);
+//        m.forward(length);
+//        m.rotate(-90+(int)angle);
+//    }
 }

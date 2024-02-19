@@ -30,10 +30,10 @@ public class Bot2DriverOp extends LinearOpMode {
 //    Servo rr;
 
     int FREEZE_SPEED=0;
-    private float cfl = 1.0f;
-    private float cfr = 1.0f;
-    private float cbl = 1.0f;
-    private float cbr = 1.0f;
+    private float cfl = 3.0f;
+    private float cfr = 3.0f;
+    private float cbl = 3.0f;
+    private float cbr = 3.0f;
 
     @Override
 
@@ -62,7 +62,7 @@ public class Bot2DriverOp extends LinearOpMode {
         BLMotor.setDirection(DcMotor.Direction.FORWARD);
         BRMotor.setDirection(DcMotor.Direction.REVERSE);
 
-//let's gooooooooooooooooooooooooooooooooooooooooo
+//let's goooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
         waitForStart();
 
         while (opModeIsActive()) {
@@ -93,7 +93,7 @@ public class Bot2DriverOp extends LinearOpMode {
             BRMotor.setPower(BRPwr);
            // isBeamBroke = breakBeam.getState();
 
-//gamepad 1 -- ooooooooooonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee --
+//gamepad 1 -- ooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee --
             if(gamepad1.x){
                 //
             }
@@ -148,7 +148,7 @@ public class Bot2DriverOp extends LinearOpMode {
 
             }
 
-//gamepad 2 --- tttttttwwwwwwwwwwwwwwoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -------
+//gamepad 2 --- tttttttttttttttttttttttttttwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -------
             if(gamepad2.x)
             {
                 //drone
@@ -219,6 +219,10 @@ public class Bot2DriverOp extends LinearOpMode {
 //            telemetry.addData("break beam mode:", breakBeam.getMode());
             telemetry.addData("lTicks", ALMotor.getCurrentPosition());
             telemetry.addData("rTicks", ARMotor.getCurrentPosition());
+            telemetry.addData("FL", FLMotor.getCurrentPosition());
+            telemetry.addData("FR", FRMotor.getCurrentPosition());
+            telemetry.addData("BL", BLMotor.getCurrentPosition());
+            telemetry.addData("BR", BRMotor.getCurrentPosition());
             telemetry.update();
 
 

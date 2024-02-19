@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-@Disabled
-
+@Autonomous
 public class Bot2RNM extends LinearOpMode {
 
     int tag=0;
@@ -32,7 +32,7 @@ public class Bot2RNM extends LinearOpMode {
         waitForStart();
         if(opModeIsActive())
         {
-            m.right(-24);// Drive up to view front spike mark
+            m.right(24);// Drive up to view front spike mark
 
             sleep(scanTimer);
             int go =  o.run();
@@ -54,11 +54,11 @@ public class Bot2RNM extends LinearOpMode {
                 tag = 2;
                 telemetry.addData("straight ahead",go);
                 telemetry.update();
-                m.right(-24);
+                m.right(24);
                 as.trap();
                 as.trap();
                 as.sweepIn();
-                m.right(24);
+                m.right(-24);
             }
 /* Pixel is not straight ahead:
     1. Drive up to spike marks
@@ -67,7 +67,7 @@ public class Bot2RNM extends LinearOpMode {
             else            {
                 telemetry.addData("NOT ", "Straight");
                 telemetry.update();
-                m.right(-12);
+                m.right(12);
                 sleep(sleepTimer);
                 telemetry.addData("location pending", o.run());
                 telemetry.update();
@@ -87,9 +87,9 @@ public class Bot2RNM extends LinearOpMode {
                     tag = 1;
                     telemetry.addData("drive", " left");
                     telemetry.update();
-                    m.forward(-12);
-                    // drop pixel
                     m.forward(12);
+                    // drop pixel
+                    m.forward(-12);
 
                 }
 /* By process of elimination, the team prop is right
@@ -105,17 +105,17 @@ public class Bot2RNM extends LinearOpMode {
                     tag = 3;
                     telemetry.addData("drive", " right");
                     telemetry.update();
-                    m.forward(12);
-                    // drop pixel
                     m.forward(-12);
-                    m.right(24);
+                    // drop pixel
+                    m.forward(12);
+                    m.right(-24);
             
                 }
 
             }
             telemetry.addData("driving", " to face backboard");
             telemetry.update();
-            m.forward(36); // Drive up to backboard
+            m.forward(-36); // Drive up to backboard
 
             o.closeOpenCV();
             a= new OpticSysAprilTag(hardwareMap);
@@ -125,51 +125,52 @@ public class Bot2RNM extends LinearOpMode {
             //telemetry.update();
             telemetry.addData("april tag i hope ", a.getTag());
             telemetry.update();
-            findTag(a.getTag());
-            m.placePixel();
-
-            as.armUp();
-            as.trap();
-            as.armDown();
+            sleep(3000);
+//           // findTag(a.getTag());
+//            m.placePixel();
+//
+//            as.armUp();
+//            as.trap();
+//            as.armDown();
         }
 
     }
-    public void findTag(int tag)
-    {
-        if(color!=1)
-        {
-            tag+=3;
-        }
-        if( a.getTag()== tag+3)
-        {
-            driveToTag();
-        }
-        else if(a.getTag()< tag)
-        {
-            m.rotate(90);
-            m.forward(-10 );
-            m.rotate(90);
-            findTag(tag);
-
-        }
-        else if(a.getTag()> tag)
-        {
-            m.rotate(-90);
-            m.forward(10);
-            m.rotate(-90);
-            findTag(tag);
-
-        }
-    }
+//    public void findTag(int tag)
+//    {
+//        if(color!=1)
+//        {
+//            tag+=3;
+//        }
+//        if( a.getTag()== tag+3)
+//        {
+//            driveToTag();
+//        }
+//        else if(a.getTag()< tag)
+//        {
+//            m.rotate(90);
+//            m.forward(-10 );
+//            m.rotate(90);
+//            findTag(tag);
+//
+//        }
+//        else if(a.getTag()> tag)
+//        {
+//            m.rotate(-90);
+//            m.forward(10);
+//            m.rotate(-90);
+//            findTag(tag);
+//
+//        }
+//    }
     // Drive up close to tag
-    public void driveToTag()
-    {
-        double x = a.getX();
-        double y = a.getY();
-        double angle =  Math.tan(x/y);
-        int length = (int)Math.sqrt(Math.pow(x,2)+Math.pow(y,2)); // set distance to travel as the hypotenuse of a triangle with x and y as sides
-        m.rotate((int) angle);
-        m.forward(length);
-        m.rotate(-90+(int)angle);
-    }
+//    public void driveToTag()
+//    {
+//        double x = a.getX();
+//        double y = a.getY();
+//        double angle =  Math.tan(x/y);
+//        int length = (int)Math.sqrt(Math.pow(x,2)+Math.pow(y,2)); // set distance to travel as the hypotenuse of a triangle with x and y as sides
+//        m.rotate((int) angle);
+//        m.forward(length);
+//        m.rotate(-90+(int)angle);
+//    }
 }

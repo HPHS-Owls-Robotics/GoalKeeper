@@ -31,17 +31,25 @@ public class ArmSys {
             motors[i].setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
-
     }
 
     public void armUp()
     {
-        ALMotor.setTargetPosition(x);
+        ALMotor.setTargetPosition(ALMotor.getCurrentPosition()-5000);
+        ARMotor.setTargetPosition(ALMotor.getCurrentPosition()-5000);
+        ALMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ARMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ALMotor.setPower(-0.3f);
+        ARMotor.setPower(-0.3f);
     }
     public void armDown()
     {
-        ARMotor.setTargetPosition(x);
-    }
+        ALMotor.setTargetPosition(ALMotor.getCurrentPosition()+5000);
+        ARMotor.setTargetPosition(ALMotor.getCurrentPosition()+5000);
+        ALMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ARMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ALMotor.setPower(0.3f);
+        ARMotor.setPower(0.3f);    }
     public void sweepOut()
     {
         Sweeper.setPower(1);
