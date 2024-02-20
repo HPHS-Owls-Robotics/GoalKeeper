@@ -25,8 +25,9 @@ public class Bot2DriverOp extends LinearOpMode {
 //    CRServo sweepRight;
 //    CRServo sweepLeft;
 
-    //Servo trapdoor;
+    Servo trapdoor;
     Servo drone;
+    Servo sweep;
 //    Servo rr;
 
     int FREEZE_SPEED=0;
@@ -48,11 +49,12 @@ public class Bot2DriverOp extends LinearOpMode {
         Sweeper = hardwareMap.dcMotor.get("S_Motor");
         Belt = hardwareMap.dcMotor.get("C_Motor");
         drone = hardwareMap.servo.get("D_Servo");
-       // trapdoor = hardwareMap.servo.get("T_Servo");
+        sweep = hardwareMap.servo.get("S_Servo");
+        trapdoor = hardwareMap.servo.get("T_Servo");
 
 //speeds
         float SPwr=5f, APwr, FLPwr,FRPwr,BLPwr,BRPwr;
-       // trapdoor.setPosition(0.0); //check
+        trapdoor.setPosition(0.0); //check
         APwr = 1f;
 //booleans
         boolean isBeamBroke;
@@ -95,10 +97,10 @@ public class Bot2DriverOp extends LinearOpMode {
 
 //gamepad 1 -- ooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee --
             if(gamepad1.x){
-                //
+                sweep.setPosition(0);
             }
             if(gamepad1.y){
-                //
+                sweep.setPosition(2);
             }
 //            if(gamepad1.b){
 ////                //sweep mode 1
@@ -133,14 +135,14 @@ public class Bot2DriverOp extends LinearOpMode {
 
             if(gamepad1.left_bumper){
                 //sweep out
-                Sweeper.setPower(SPwr);
-                Belt.setPower(SPwr/2);
+                Sweeper.setPower(-SPwr);
+                Belt.setPower(SPwr);
             }
             if(gamepad1.right_bumper)
             {
                 //sweep in
-                Sweeper.setPower(-SPwr);
-                Belt.setPower(-SPwr/2);
+                Sweeper.setPower(SPwr);
+                Belt.setPower(-SPwr);
             }
             if(gamepad1.left_bumper==gamepad1.right_bumper){
                 Sweeper.setPower(0);
@@ -162,46 +164,43 @@ public class Bot2DriverOp extends LinearOpMode {
             {
                 //
             }
-//            if(gamepad2.b){
-//                if(trapdoor.getPosition()==0.0){
-//                    trapdoor.setPosition(1.0);
-//                    sleep(1000);
-//                    trapdoor.setPosition(0.0);
-//                } else{
-//                    trapdoor.setPosition(0.0);
-//                }
-//                sleep(200);
-//            }
-
-            if(gamepad2.dpad_up)
-            {
-                ALMotor.setPower(-APwr);
+            if(gamepad2.b){
+                if(trapdoor.getPosition()==0.0){
+                    trapdoor.setPosition(1.0);
+                    sleep(1000);
+                    trapdoor.setPosition(0.0);
+                } else{
+                    trapdoor.setPosition(0.0);
+                }
+                sleep(200);
             }
-            if(gamepad2.dpad_down)
-            {
 
-                ALMotor.setPower(APwr);
-            }
 
             if(gamepad2.left_bumper)
             {
                 //Arm up
 //                ARMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 ARMotor.setPower(-APwr);
+                ALMotor.setPower(APwr);
             }
             if(gamepad2.right_bumper)
             {
                 //Arm down
 //                ARMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 ARMotor.setPower(APwr);
+                ALMotor.setPower(-APwr);
 
             }
             if(gamepad2.left_bumper==gamepad2.right_bumper){
                 ARMotor.setPower(FREEZE_SPEED);
-            }
-            if(gamepad2.dpad_up==gamepad2.dpad_down){
                 ALMotor.setPower(FREEZE_SPEED);
             }
+
+            if(gamepad2.dpad_up)
+            {
+                Belt.setPower(SPwr);
+            }
+
 //
 //            ARMotor.setPower(gamepad2.right_stick_y);
 //            ALMotor.setPower(gamepad2.left_stick_y);

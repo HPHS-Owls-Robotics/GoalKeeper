@@ -11,13 +11,13 @@ public class Bot2BFL extends LinearOpMode {
     int sleepTimer =3000;
     int scanTimer=3000;
     Bot2MoveSys m;
-    OpticSysOpenCV o;
+    OpticSys o;
     OpticSysAprilTag a;
 
     @Override
     public void runOpMode() throws InterruptedException {
         m= new Bot2MoveSys(hardwareMap);
-        o= new OpticSysOpenCV(hardwareMap, color);
+        o= new OpticSys(hardwareMap, color);
         o.initOpenCV();
         o.startOpenCV();
         telemetry.addData("Mode", "waiting for start");
@@ -31,11 +31,11 @@ public class Bot2BFL extends LinearOpMode {
             m.right(24);// Drive up to view front spike mark
 
             sleep(scanTimer);
-            double go = o.run();
-            telemetry.addData("location pending...", o.run());
+            double go = o.runRed();
+            telemetry.addData("location pending...", o.runRed());
             telemetry.update();
             /// sleep(3000);
-            go= o.run();
+            go= o.runRed();
             telemetry.addData("location", go);
             telemetry.update();
 
@@ -62,9 +62,9 @@ public class Bot2BFL extends LinearOpMode {
                 telemetry.update();
                 m.right(12);
                 sleep(sleepTimer);
-                telemetry.addData("location pending", o.run());
+                telemetry.addData("location pending", o.runRed());
                 telemetry.update();
-                go=  o.run();
+                go=  o.runRed();
                 telemetry.addData("location",go);
                 telemetry.update();
                 sleep(sleepTimer);

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous
 public class Bot2RNM extends LinearOpMode {
@@ -15,13 +14,13 @@ public class Bot2RNM extends LinearOpMode {
     Bot2MoveSys m;
     ArmSys as;
 
-    OpticSysOpenCV o;
+    OpticSys o;
     OpticSysAprilTag a;
 
     @Override
     public void runOpMode() throws InterruptedException {
         m= new Bot2MoveSys(hardwareMap);
-        o= new OpticSysOpenCV(hardwareMap, color);
+        o= new OpticSys(hardwareMap, color);
         o.initOpenCV();
         o.startOpenCV();
         telemetry.addData("Mode", "waiting for start");
@@ -35,11 +34,11 @@ public class Bot2RNM extends LinearOpMode {
             m.right(24);// Drive up to view front spike mark
 
             sleep(scanTimer);
-            int go =  o.run();
-            telemetry.addData("location pending...", o.run());
+            int go =  o.runRed();
+            telemetry.addData("location pending...", o.runRed());
             telemetry.update();
             /// sleep(3000);
-            go= o.run();
+            go= o.runRed();
             telemetry.addData("location", go);
             telemetry.update();
 
@@ -69,9 +68,9 @@ public class Bot2RNM extends LinearOpMode {
                 telemetry.update();
                 m.right(12);
                 sleep(sleepTimer);
-                telemetry.addData("location pending", o.run());
+                telemetry.addData("location pending", o.runRed());
                 telemetry.update();
-                go=  o.run();
+                go=  o.runRed();
                 telemetry.addData("location",go);
                 telemetry.update();
                 sleep(sleepTimer);

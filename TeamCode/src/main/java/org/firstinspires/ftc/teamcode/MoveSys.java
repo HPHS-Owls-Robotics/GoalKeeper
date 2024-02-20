@@ -20,7 +20,7 @@ public class MoveSys {
     Servo trapdoor;
     BNO055IMU imu;
 
-    OpticSysOpenCV openCv;
+    OpticSys openCv;
     OpticSysAprilTag aprilTag;
 
     //numbers

@@ -60,12 +60,12 @@ public class ArmSys {
     }
     public void trap()
     {
-            if(trapdoor.getPosition()==0.0){
-                trapdoor.setPosition(1.0);
-                trapdoor.setPosition(0.0);
-            } else{
-                trapdoor.setPosition(0.0);
-            }
-    }
+        trapdoor.setPosition(2);
 
+    }
+    public void trapClose()
+    {
+        trapdoor.setPosition(0);
+
+    }
 }
