@@ -16,6 +16,7 @@ public class ArmSys {
     private DcMotor Belt;
 
     private Servo trapdoor;
+    Servo sweep;
 
     int x = 1500;
     public ArmSys(HardwareMap hardwareMap)
@@ -26,6 +27,8 @@ public class ArmSys {
         Sweeper = hardwareMap.dcMotor.get("S_Motor");
         Belt = hardwareMap.dcMotor.get("C_Motor");
         trapdoor = hardwareMap.servo.get("T_Servo");
+        sweep = hardwareMap.servo.get("S_Servo");
+
         DcMotor[] motors = {ARMotor,ALMotor};
         for (int i = 0; i < 2; i++) {
             motors[i].setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -67,5 +70,17 @@ public class ArmSys {
     {
         trapdoor.setPosition(0);
 
+    }
+
+    public void sweep()
+    {
+        if(sweep.getPosition()==0)
+        {
+            sweep.setPosition(2);
+        }
+        else if(sweep.getPosition()==2)
+        {
+            sweep.setPosition(0);
+        }
     }
 }

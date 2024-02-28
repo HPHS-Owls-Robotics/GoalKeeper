@@ -64,7 +64,15 @@ public class Bot2DriverOp extends LinearOpMode {
         BLMotor.setDirection(DcMotor.Direction.FORWARD);
         BRMotor.setDirection(DcMotor.Direction.REVERSE);
 
-//let's goooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+
+        //THIS OBJECT MOVES IN INITIALIZATION
+        sweep.setPosition(0);
+
+//let's gooo
+//
+// ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
         waitForStart();
 
         while (opModeIsActive()) {

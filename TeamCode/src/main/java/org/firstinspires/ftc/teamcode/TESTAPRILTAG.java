@@ -28,81 +28,42 @@ public class TESTAPRILTAG extends LinearOpMode {
         int tag=0;
         int go=0;
 
-        o.initOpenCV();
-        o.startOpenCV();
+        o.initOpenCV(); // set hardwaremap, ie set cameras
+        o.startOpenCV();// start streaming, set pipeline
+        as.sweep();
         waitForStart();
         if(opModeIsActive())
-            {
-//                as.trap();
-//                sleep(3000);
-                telemetry.addData("going", m.getCurrentTicks());
+        {
+                sleep(3000);
+                m.right(55);
+                telemetry.addData("one", "moving right");
                 telemetry.update();
-                //o.startOpenCV();
                 sleep(3000);
                 go= o.runRed();
+                telemetry.addData("two",go);
+                telemetry.update();
+                sleep(3000);
 
-                if(go==2)
+                if(go==1)//leftmost, far from backboard
                 {
-                    telemetry.addData("going", "middle");
-                    telemetry.update();
-                    m.right(55);
-                    sleep(6000);
-                    as.trap();
-                    sleep(3000);
-                    m.right(-16);
-                    sleep(3000);
-                    tag=2;
+                    m.forward(18);
+                    as.sweep();
+                    m.forward(-36);
                 }
-                else
+                else if(go==2)//middle
                 {
-                    m.right(24);
+                    m.right(12);
+                    as.sweep();
+                    m.right(12);
+                    m.forward(-18);
+                }
+                else if(go==3)//close to backboard
+                {
+                    m.forward(-18);
+                    as.sweep();
 
-                    if(go==3)
-                    {
-                        telemetry.addData("going", "left");
-                        telemetry.update();
-                        tag=3;
-                        m.forward(12);
-                        as.trap();
-                        m.forward(-12);
-
-                    }
-                    else
-                    {
-                        tag=1;
-                        telemetry.addData("going", "right");
-                        telemetry.update();
-                        m.forward(-36);
-                        sleep(3000);
-                        as.trap();
-                        sleep(3000);
-                        m.forward(12);
-                        sleep(3000);
-                        m.right(-24);
-                        sleep(3000);
-                        m.forward(24);
-                        sleep(3000);
-
-
-
-                    }
                 }
 
-                m.forward(36);
-                telemetry.addData("one", "test igf crash");
-                telemetry.update();
-
-                o.closeOpenCV();
-
-                o.initAprilTags();
-                o.startAprilTags();
-                sleep(3000);
-                telemetry.addData("two", "see igf crash");
-                telemetry.update();
-
-                sleep(3000);
-//
-//
                o.getTag();
                 telemetry.addData("tag",o.getTag());
                 telemetry.addData("X",o.getX());
@@ -110,7 +71,7 @@ public class TESTAPRILTAG extends LinearOpMode {
                 telemetry.update();
 
                 findTag(tag);
-                sleep(1000);
+                sleep(2000);
 
             }
 
