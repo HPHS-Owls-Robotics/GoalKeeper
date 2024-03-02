@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous
-public class TESTAPRILTAG extends LinearOpMode {
+@Autonomous(name= "real auto")
+public class RedLongAuto extends LinearOpMode {
 
     int tag=0;
 
@@ -27,51 +27,77 @@ public class TESTAPRILTAG extends LinearOpMode {
 
         int tag=0;
         int go=0;
-
+        telemetry.addData("one", "moving right");
+        telemetry.update();
         o.initOpenCV(); // set hardwaremap, ie set cameras
         o.startOpenCV();// start streaming, set pipeline
-        as.sweep();
         waitForStart();
         if(opModeIsActive())
         {
-                sleep(3000);
-                m.right(55);
+            telemetry.addData("two", "moving right");
+            telemetry.update();
+            as.sweep1();
+            sleep(3000);
+
+                m.right(52);
                 telemetry.addData("one", "moving right");
                 telemetry.update();
                 sleep(3000);
                 go= o.runRed();
                 telemetry.addData("two",go);
                 telemetry.update();
-                sleep(3000);
+                sleep(2000);
 
                 if(go==1)//leftmost, far from backboard
                 {
-                    m.forward(18);
-                    as.sweep();
-                    m.forward(-36);
+                   // m.forward(18);
+                    //sleep(3000);
+
+                    as.sweep1();
+                    sleep(3000);
+
+                    m.forward(-18);
+                    sleep(3000);
+
+
                 }
                 else if(go==2)//middle
                 {
+                    m.forward(-10);
+                    sleep(3000);
                     m.right(12);
-                    as.sweep();
-                    m.right(12);
-                    m.forward(-18);
+                    sleep(3000);
+                    m.right(-12);
+                    sleep(3000);
+                    m.forward(-8);
+                    sleep(1000);
+
+
                 }
                 else if(go==3)//close to backboard
                 {
                     m.forward(-18);
-                    as.sweep();
+                    sleep(3000);
+                    as.sweep1();
+                    sleep(3000);
+
 
                 }
 
-               o.getTag();
+                m.forward(84);
+                sleep(3000);
+                o.closeOpenCV();
+                o.initAprilTags();
+                o.startAprilTags();
+
+                o.getTag();
                 telemetry.addData("tag",o.getTag());
                 telemetry.addData("X",o.getX());
                 telemetry.addData("Y",o.getY());
                 telemetry.update();
 
                 findTag(tag);
-                sleep(2000);
+                sleep(3000);
 
             }
 

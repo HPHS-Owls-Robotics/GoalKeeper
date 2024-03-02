@@ -55,7 +55,7 @@ public class OpticSys {
         this.hardwareMap = hardwareMap;
         if (color == 1)
         {
-            scalarLowerYCrCb = new Scalar(0, 100, 160);
+            scalarLowerYCrCb = new Scalar(0, 50, 50);
             scalarUpperYCrCb = new Scalar(255.0, 120, 255);
         }
 
@@ -217,7 +217,7 @@ public class OpticSys {
         }
         // Only use this line of the code when you want to find the lower and upper values
         //testing(myPipeline1);
-        if(myPipeline1.getRectHeight() > 50 || myPipeline2.getRectHeight() > 50 ){
+        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 200 ){
 
             if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
                 return 3;// rightmost=6
@@ -232,7 +232,30 @@ public class OpticSys {
 
         //return myPipeline1.getRectHeight();
     }
+    public int runBlue()
+    {
+        myPipeline1.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+        myPipeline2.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+        if(myPipeline1.error){
+            return -1;
+        }
+        // Only use this line of the code when you want to find the lower and upper values
+        //testing(myPipeline1);
+        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 200 ){
 
+            if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
+                return 1;// rightmost=6
+            }
+            if(myPipeline2.getRectArea()>myPipeline1.getRectArea())
+            {
+                return 1;// leftmost=4
+
+            }
+        }
+        return 3; // middle=4
+
+        //return myPipeline1.getRectHeight();
+    }
     public double getA1()
     {
         return myPipeline1.getRectArea();

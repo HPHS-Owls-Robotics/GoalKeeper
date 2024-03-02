@@ -72,15 +72,13 @@ public class ArmSys {
 
     }
 
-    public void sweep()
+    public void sweep1()
     {
-        if(sweep.getPosition()==0)
-        {
-            sweep.setPosition(2);
-        }
-        else if(sweep.getPosition()==2)
-        {
-            sweep.setPosition(0);
-        }
+        sweep.setPosition(0);
+    }
+    public void sweep2()
+    {
+        sweep.setPosition(2);
+
     }
 }
