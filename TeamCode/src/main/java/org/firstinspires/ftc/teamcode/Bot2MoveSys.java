@@ -1,11 +1,37 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import com.qualcomm.robotcore.hardware.Servo;
+
+
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 public class Bot2MoveSys {
 
@@ -16,7 +42,7 @@ public class Bot2MoveSys {
     private DcMotor BRMotor;
     private DcMotor Arm;
     private Servo trapdoor;
-    BNO055IMU imu;
+    IMU imu;
 
     OpticSys openCv;
     OpticSysAprilTag aprilTag;
@@ -37,7 +63,20 @@ public class Bot2MoveSys {
 
     public Bot2MoveSys(HardwareMap hardwareMap) {
         //openCv = new OpticSysOpenCV(hardwareMap);
-//        aprilTag = new OpticSysAprilTag(hardwareMap);
+        //aprilTag = new OpticSysAprilTag(hardwareMap);
+        imu =  hardwareMap.get(IMU.class, "imu");
+
+        IMU.Parameters parameters = new IMU.Parameters(
+                new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
+                )
+        );
+
+        imu.initialize(parameters);
+
+
+
+
 //        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 //        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
 //        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -45,9 +84,10 @@ public class Bot2MoveSys {
 //        parameters.loggingEnabled = true;
 //        parameters.loggingTag = "IMU";
 //        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
+//
 //        imu = hardwareMap.get(BNO055IMU.class, "imu");
 //        imu.initialize(parameters);
+
         FLMotor = hardwareMap.dcMotor.get ("FL_Motor"); //check with driver hub
         FRMotor = hardwareMap.dcMotor.get("FR_Motor"); //check with driver hub
         BLMotor = hardwareMap.dcMotor.get ("BL_Motor"); //check with driver hub
@@ -191,82 +231,97 @@ public class Bot2MoveSys {
         BLMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         BRMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-//    public float getAngle()
-//    {
-//        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    public float getAngle()
+    {
+        Orientation myRobotOrientation;
+        myRobotOrientation = imu.getRobotOrientation(
+                AxesReference.INTRINSIC,
+                AxesOrder.XYZ,
+                AngleUnit.DEGREES
+        );
+//        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 //
-//        float deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+//        BNO055IMU.CalibrationData calibrationData = imu.readCalibrationData();
 //
-//        if (deltaAngle < -180)
-//            deltaAngle += 360;
-//        else if (deltaAngle > 180)
-//            deltaAngle -= 360;
-//
-//        globalAngle += deltaAngle;
-//
-//        lastAngles = angles;
-//
-//        return globalAngle;
-//    }
-//
-//    //The method turns the robot by a specific angle, -180 to +180.
-//    public void rotate(int degrees)
-//    {
-//        float  leftPower, rightPower;
-//
-//        resetAngle();
-//
-//        //if the degrees are less than 0, the robot will turn right
-//        if (degrees < 0)
-//        {
-//            leftPower = TURN_SPEED;
-//            rightPower = -TURN_SPEED;
-//        }
-//        else if (degrees > 0)//if greater than 0, turn left
-//        {
-//            leftPower = -TURN_SPEED;
-//            rightPower = TURN_SPEED;
-//        }
-//        else return;
-//
-//        //sets power to motors with negative signs properly assigned to make the robot go in the correct direction
-//        FLMotor.setPower(leftPower);
-//        FRMotor.setPower(rightPower);
-//        BLMotor.setPower(leftPower);
-//        BRMotor.setPower(rightPower);
-//
-//        //Repeatedly check the IMU until the getAngle() function returns the value specified.
-//        if (degrees < 0)
-//        {
-//
-//            while ( getAngle() > degrees) {}
-//        }
-//        else
-//            while (getAngle() < degrees) {}
-//
-//
-//        //stop the motors after the angle has been found.
-//
-//        FLMotor.setPower(0);
-//        FRMotor.setPower(0);
-//        BLMotor.setPower(0);
-//        BRMotor.setPower(0);
-//
-//        //sleep for a bit to make sure the robot doesn't over sh
-//
-//        resetAngle();
-//    }
-//
-//
-//    //this method resets the angle so that the robot's heading is now 0
-//
-//    public void resetAngle()
-//    {
-//        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//
-//        globalAngle = 0;
-//    }
-//    //Go to correct tag
+//        Orientation angles = imu.getAngularOrientation();
+
+        float deltaAngle = myRobotOrientation.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = myRobotOrientation;
+
+        return globalAngle;
+    }
+
+    //The method turns the robot by a specific angle, -180 to +180.
+    public void rotate(int degrees)
+    {
+
+        float  leftPower, rightPower;
+
+        resetAngle();
+
+        //if the degrees are less than 0, the robot will turn right
+        if (degrees < 0)
+        {
+            leftPower = TURN_SPEED;
+            rightPower = -TURN_SPEED;
+        }
+        else if (degrees > 0)//if greater than 0, turn left
+        {
+            leftPower = -TURN_SPEED;
+            rightPower = TURN_SPEED;
+        }
+        else return;
+
+        //sets power to motors with negative signs properly assigned to make the robot go in the correct direction
+        FLMotor.setPower(leftPower);
+        FRMotor.setPower(rightPower);
+        BLMotor.setPower(leftPower);
+        BRMotor.setPower(rightPower);
+
+        //Repeatedly check the IMU until the getAngle() function returns the value specified.
+        if (degrees < 0)
+        {
+
+            while ( getAngle() > degrees) {}
+        }
+        else
+            while (getAngle() < degrees) {}
+
+
+        //stop the motors after the angle has been found.
+
+        FLMotor.setPower(0);
+        FRMotor.setPower(0);
+        BLMotor.setPower(0);
+        BRMotor.setPower(0);
+
+        //sleep for a bit to make sure the robot doesn't over sh
+
+        resetAngle();
+    }
+
+
+    //this method resets the angle so that the robot's heading is now 0
+
+    public void resetAngle()
+    {
+        lastAngles = imu.getRobotOrientation(
+                AxesReference.INTRINSIC,
+                AxesOrder.XYZ,
+                AngleUnit.DEGREES
+        );
+
+        globalAngle = 0;
+    }
+    //Go to correct tag
 
     public void placePixel()
     {
@@ -281,8 +336,8 @@ public class Bot2MoveSys {
     {
         trapdoor.setPosition(0.0);
     }
-    public String getCalibrationStatus()
+    public void getCalibrationStatus()
     {
-        return imu.getCalibrationStatus().toString();
+        return;
     }
 }

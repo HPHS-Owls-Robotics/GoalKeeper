@@ -183,14 +183,14 @@ public class Bot2DriverOp extends LinearOpMode {
             }
 
 
-            if(gamepad2.left_bumper&&ALMotor.getCurrentPosition()<=1500)
+            if(gamepad2.left_bumper&&ARMotor.getCurrentPosition()<13500)
             {
                 //Arm up
 //                ARMotor.setMode(DcMotor.RunMode.RUN_WITHOUT  _ENCODER);
                 ARMotor.setPower(-APwr);
                 ALMotor.setPower(-APwr);
             }
-            if(gamepad2.right_bumper&&ALMotor.getCurrentPosition()<=1500)
+            if(gamepad2.right_bumper&&ARMotor.getCurrentPosition()>0)
             {
                 //Arm down
 //                ARMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -231,11 +231,6 @@ public class Bot2DriverOp extends LinearOpMode {
             telemetry.addData("BL", BLMotor.getCurrentPosition());
             telemetry.addData("BR", BRMotor.getCurrentPosition());
             telemetry.update();
-
-
-
-
-
         }
 
     }

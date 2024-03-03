@@ -40,16 +40,16 @@ public class MoveSys {
     public MoveSys(HardwareMap hardwareMap) {
         //openCv = new OpticSysOpenCV(hardwareMap);
         aprilTag = new OpticSysAprilTag(hardwareMap);
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+//        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+//        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+//        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
+//        parameters.loggingEnabled = true;
+//        parameters.loggingTag = "IMU";
+//        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+//
+//        imu = hardwareMap.get(BNO055IMU.class, "imu");
+//        imu.initialize(parameters);
         LMotor = hardwareMap.dcMotor.get("L_Motor");
         RMotor = hardwareMap.dcMotor.get("R_Motor");
         LMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -86,71 +86,71 @@ public class MoveSys {
             RMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
-    public float getAngle()
-    {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        float deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        return globalAngle;
-    }
-    public void rotate(int degrees)
-    {       float  leftPower, rightPower;
-
-        resetAngle();
-
-        //if the degrees are less than 0, the robot will turn right
-        if (degrees < 0)
-        {
-            leftPower = TURN_SPEED;
-            rightPower = -TURN_SPEED;
-        }
-        else if (degrees > 0)//if greater than 0, turn left
-        {
-            leftPower = -TURN_SPEED;
-            rightPower = TURN_SPEED;
-        }
-        else return;
-
-        //sets power to motors with negative signs properly assigned to make the robot go in the correct direction
-        LMotor.setPower(leftPower);
-        RMotor.setPower(rightPower);
-
-        //Repeatedly check the IMU until the getAngle() function returns the value specified.
-        if (degrees < 0)
-        {
-            while (getAngle() == 0) {}
-
-            while (getAngle() > degrees) {}
-        }
-        else
-            while (getAngle() < degrees) {}
-
-
-        //stop the motors after the angle has been found.
-
-        LMotor.setPower(0);
-        RMotor.setPower(0);
-
-        //sleep for a bit to make sure the robot doesn't over shoot
-
-        resetAngle();
-    }
-    public void resetAngle()
-    {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        globalAngle = 0;
-    }
+//    public float getAngle()
+//    {
+//        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//
+//        float deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+//
+//        if (deltaAngle < -180)
+//            deltaAngle += 360;
+//        else if (deltaAngle > 180)
+//            deltaAngle -= 360;
+//
+//        globalAngle += deltaAngle;
+//
+//        lastAngles = angles;
+//
+//        return globalAngle;
+//    }
+//    public void rotate(int degrees)
+//    {       float  leftPower, rightPower;
+//
+//        resetAngle();
+//
+//        //if the degrees are less than 0, the robot will turn right
+//        if (degrees < 0)
+//        {
+//            leftPower = TURN_SPEED;
+//            rightPower = -TURN_SPEED;
+//        }
+//        else if (degrees > 0)//if greater than 0, turn left
+//        {
+//            leftPower = -TURN_SPEED;
+//            rightPower = TURN_SPEED;
+//        }
+//        else return;
+//
+//        //sets power to motors with negative signs properly assigned to make the robot go in the correct direction
+//        LMotor.setPower(leftPower);
+//        RMotor.setPower(rightPower);
+//
+//        //Repeatedly check the IMU until the getAngle() function returns the value specified.
+//        if (degrees < 0)
+//        {
+//            while (getAngle() == 0) {}
+//
+//            while (getAngle() > degrees) {}
+//        }
+//        else
+//            while (getAngle() < degrees) {}
+//
+//
+//        //stop the motors after the angle has been found.
+//
+//        LMotor.setPower(0);
+//        RMotor.setPower(0);
+//
+//        //sleep for a bit to make sure the robot doesn't over shoot
+//
+//        resetAngle();
+//    }
+//    public void resetAngle()
+//    {
+//        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//
+//        globalAngle = 0;
+//    }
     //Go to correct tag
 
     public void placePixel()

@@ -19,11 +19,15 @@ public class RedLongAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry.addData("one", "moving right");
+        telemetry.update();
         m= new Bot2MoveSys(hardwareMap);
         as = new ArmSys(hardwareMap);
         //a= new EOCVAPRILTAGS(hardwareMap);
         o= new OpticSys(hardwareMap,0);
         //a.initAprilTag();
+
+        //m.rotate(90);
 
         int tag=0;
         int go=0;
@@ -31,15 +35,18 @@ public class RedLongAuto extends LinearOpMode {
         telemetry.update();
         o.initOpenCV(); // set hardwaremap, ie set cameras
         o.startOpenCV();// start streaming, set pipeline
+
+
         waitForStart();
         if(opModeIsActive())
         {
+            //m.rotate(5);
             telemetry.addData("two", "moving right");
             telemetry.update();
             as.sweep1();
             sleep(3000);
 
-                m.right(52);
+               // m.right(48);
                 telemetry.addData("one", "moving right");
                 telemetry.update();
                 sleep(3000);
@@ -53,7 +60,7 @@ public class RedLongAuto extends LinearOpMode {
                    // m.forward(18);
                     //sleep(3000);
 
-                    as.sweep1();
+                    as.sweep2();
                     sleep(3000);
 
                     m.forward(-18);
@@ -63,14 +70,8 @@ public class RedLongAuto extends LinearOpMode {
                 }
                 else if(go==2)//middle
                 {
-                    m.forward(-10);
-                    sleep(3000);
-                    m.right(12);
-                    sleep(3000);
-                    m.right(-12);
-                    sleep(3000);
-                    m.forward(-8);
-                    sleep(1000);
+
+
 
 
                 }
@@ -78,13 +79,13 @@ public class RedLongAuto extends LinearOpMode {
                 {
                     m.forward(-18);
                     sleep(3000);
-                    as.sweep1();
+                    as.sweep2();
                     sleep(3000);
 
 
                 }
 
-                m.forward(84);
+                m.forward(40);
                 sleep(3000);
                 o.closeOpenCV();
                 o.initAprilTags();

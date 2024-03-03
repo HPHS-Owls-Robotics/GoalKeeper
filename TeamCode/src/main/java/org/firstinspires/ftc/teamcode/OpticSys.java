@@ -217,7 +217,7 @@ public class OpticSys {
         }
         // Only use this line of the code when you want to find the lower and upper values
         //testing(myPipeline1);
-        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 200 ){
+        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 100 ){
 
             if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
                 return 3;// rightmost=6
@@ -241,10 +241,10 @@ public class OpticSys {
         }
         // Only use this line of the code when you want to find the lower and upper values
         //testing(myPipeline1);
-        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 200 ){
+        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 100 ){
 
             if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
-                return 1;// rightmost=6
+                return 3;// rightmost=6
             }
             if(myPipeline2.getRectArea()>myPipeline1.getRectArea())
             {
@@ -252,7 +252,7 @@ public class OpticSys {
 
             }
         }
-        return 3; // middle=4
+        return 2; // middle=4
 
         //return myPipeline1.getRectHeight();
     }

@@ -21,7 +21,7 @@ public class Bot2BFL extends LinearOpMode {
         o.initOpenCV();
         o.startOpenCV();
         telemetry.addData("Mode", "waiting for start");
-        telemetry.addData("imu calib status", m.getCalibrationStatus());
+        //telemetry.addData("imu calib status", m.getCalibrationStatus());
         telemetry.update();
 
 
