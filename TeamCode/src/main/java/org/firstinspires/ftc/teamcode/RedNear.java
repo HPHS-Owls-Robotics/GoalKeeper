@@ -4,8 +4,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous
-public class BlueLongAuto extends LinearOpMode {
+
+@Autonomous(name= "red near")
+public class RedNear extends LinearOpMode {
 
     int tag=0;
 
@@ -18,11 +19,15 @@ public class BlueLongAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry.addData("one", "moving right");
+        telemetry.update();
         m= new Bot2MoveSys(hardwareMap);
         as = new ArmSys(hardwareMap);
         //a= new EOCVAPRILTAGS(hardwareMap);
-        o= new OpticSys(hardwareMap,1);
+        o= new OpticSys(hardwareMap,0);
         //a.initAprilTag();
+
+        //m.rotate(90);
 
         int tag=0;
         int go=0;
@@ -30,24 +35,18 @@ public class BlueLongAuto extends LinearOpMode {
         telemetry.update();
         o.initOpenCV(); // set hardwaremap, ie set cameras
         o.startOpenCV();// start streaming, set pipeline
+
+
         waitForStart();
         if(opModeIsActive())
         {
-           // m.rotate(10);
-            sleep(3000);
-            go = o.runBlue();
-            telemetry.addData("run", go);
-            telemetry.update();
-            sleep(3000);
-            //m.rotate(10);
-            sleep(200);
-
+            //m.rotate(5);
             telemetry.addData("two", "moving right");
             telemetry.update();
             as.sweep1();
             sleep(3000);
 
-            m.right(-52);
+            // m.right(48);
             telemetry.addData("one", "moving right");
             telemetry.update();
             sleep(3000);
@@ -61,7 +60,7 @@ public class BlueLongAuto extends LinearOpMode {
                 // m.forward(18);
                 //sleep(3000);
 
-                as.sweep1();
+                as.sweep2();
                 sleep(3000);
 
                 m.forward(-18);
@@ -72,12 +71,17 @@ public class BlueLongAuto extends LinearOpMode {
             else if(go==2)//middle
             {
 
-            m.rotate(90);
-            sleep(1000);
-            as.sweep2();
-            sleep(1000);
-            m.rotate(-90);
-            sleep(1000);
+                m.forward(12);
+                sleep(3000);
+                m.right(12);
+                sleep(3000);
+                as.sweep2();
+                sleep(3000);
+                m.right(-12);
+                sleep(3000);
+                m.forward(-12);
+                sleep(3000);
+
 
 
             }
@@ -85,26 +89,28 @@ public class BlueLongAuto extends LinearOpMode {
             {
                 m.forward(-18);
                 sleep(3000);
-                as.sweep1();
+                as.sweep2();
                 sleep(3000);
 
 
             }
+            sleep(5000);
+            m.forward(55);
 
-            m.forward(84);
-//            sleep(3000);
-//            o.closeOpenCV();
-//            o.initAprilTags();
-//            o.startAprilTags();
+//                m.forward(84);
+//                sleep(3000);
+//                o.closeOpenCV();
+//                o.initAprilTags();
+//                o.startAprilTags();
 //
-//            o.getTag();
-//            telemetry.addData("tag",o.getTag());
-//            telemetry.addData("X",o.getX());
-//            telemetry.addData("Y",o.getY());
-//            telemetry.update();
+//                o.getTag();
+//                telemetry.addData("tag",o.getTag());
+//                telemetry.addData("X",o.getX());
+//                telemetry.addData("Y",o.getY());
+//                telemetry.update();
 //
-//            findTag(tag);
-//            sleep(3000);
+//                findTag(tag);
+//                sleep(3000);
 
         }
 

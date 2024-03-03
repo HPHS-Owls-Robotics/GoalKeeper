@@ -53,7 +53,7 @@ public class Bot2DriverOp extends LinearOpMode {
         trapdoor = hardwareMap.servo.get("T_Servo");
 
 //speeds
-        float SPwr=5f, APwr, FLPwr,FRPwr,BLPwr,BRPwr;
+        float SPwr=2f, APwr, FLPwr,FRPwr,BLPwr,BRPwr,BPwr=10f;
         trapdoor.setPosition(0.0); //check
         APwr = 1f;
 //booleans
@@ -141,16 +141,16 @@ public class Bot2DriverOp extends LinearOpMode {
                 FRMotor.setDirection(DcMotor.Direction.FORWARD);
             }
 
-            if(gamepad1.left_bumper){
+            if(gamepad1.right_bumper){
                 //sweep out
                 Sweeper.setPower(-SPwr);
-                Belt.setPower(SPwr);
+                Belt.setPower(BPwr);
             }
-            if(gamepad1.right_bumper)
+            if(gamepad1.left_bumper)
             {
                 //sweep in
                 Sweeper.setPower(SPwr);
-                Belt.setPower(-SPwr);
+                Belt.setPower(-BPwr);
             }
             if(gamepad1.left_bumper==gamepad1.right_bumper){
                 Sweeper.setPower(0);
@@ -161,7 +161,7 @@ public class Bot2DriverOp extends LinearOpMode {
             if(gamepad2.x)
             {
                 //drone
-                drone.setPosition(0);
+                drone.setPosition(2f);
             }
             if(gamepad2.y)
             {
@@ -183,14 +183,14 @@ public class Bot2DriverOp extends LinearOpMode {
             }
 
 
-            if(gamepad2.left_bumper&&ARMotor.getCurrentPosition()<13500)
+            if(gamepad2.left_bumper&&ARMotor.getCurrentPosition()>-10000)
             {
                 //Arm up
 //                ARMotor.setMode(DcMotor.RunMode.RUN_WITHOUT  _ENCODER);
                 ARMotor.setPower(-APwr);
                 ALMotor.setPower(-APwr);
             }
-            if(gamepad2.right_bumper&&ARMotor.getCurrentPosition()>0)
+            if(gamepad2.right_bumper)
             {
                 //Arm down
 //                ARMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -205,10 +205,10 @@ public class Bot2DriverOp extends LinearOpMode {
 
             if(gamepad2.dpad_up)
             {
-                Belt.setPower(SPwr);
+                Belt.setPower(BPwr);
             }
 
-            Belt.setPower(0);
+         //   Belt.setPower(0);
 //
 //            ARMotor.setPower(gamepad2.right_stick_y);
 //            ALMotor.setPower(gamepad2.left_stick_y);

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous
-public class BlueLongAuto extends LinearOpMode {
+public class BlueNear extends LinearOpMode {
 
     int tag=0;
 
@@ -33,7 +33,7 @@ public class BlueLongAuto extends LinearOpMode {
         waitForStart();
         if(opModeIsActive())
         {
-           // m.rotate(10);
+            // m.rotate(10);
             sleep(3000);
             go = o.runBlue();
             telemetry.addData("run", go);
@@ -72,12 +72,12 @@ public class BlueLongAuto extends LinearOpMode {
             else if(go==2)//middle
             {
 
-            m.rotate(90);
-            sleep(1000);
-            as.sweep2();
-            sleep(1000);
-            m.rotate(-90);
-            sleep(1000);
+                m.rotate(90);
+                sleep(1000);
+                as.sweep2();
+                sleep(1000);
+                m.rotate(-90);
+                sleep(1000);
 
 
             }
@@ -91,7 +91,8 @@ public class BlueLongAuto extends LinearOpMode {
 
             }
 
-            m.forward(84);
+            m.forward(55);
+//            m.forward(84);
 //            sleep(3000);
 //            o.closeOpenCV();
 //            o.initAprilTags();

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name= "real auto")
+@Autonomous(name= "red far")
 public class RedLongAuto extends LinearOpMode {
 
     int tag=0;
@@ -71,7 +71,12 @@ public class RedLongAuto extends LinearOpMode {
                 else if(go==2)//middle
                 {
 
-
+                    m.rotate(90);
+                    sleep(1000);
+                    as.sweep2();
+                    sleep(1000);
+                    m.rotate(-90);
+                    sleep(1000);
 
 
                 }
@@ -84,21 +89,23 @@ public class RedLongAuto extends LinearOpMode {
 
 
                 }
+                sleep(5000);
+                m.forward(84);
 
-                m.forward(40);
-                sleep(3000);
-                o.closeOpenCV();
-                o.initAprilTags();
-                o.startAprilTags();
-
-                o.getTag();
-                telemetry.addData("tag",o.getTag());
-                telemetry.addData("X",o.getX());
-                telemetry.addData("Y",o.getY());
-                telemetry.update();
-
-                findTag(tag);
-                sleep(3000);
+//                m.forward(84);
+//                sleep(3000);
+//                o.closeOpenCV();
+//                o.initAprilTags();
+//                o.startAprilTags();
+//
+//                o.getTag();
+//                telemetry.addData("tag",o.getTag());
+//                telemetry.addData("X",o.getX());
+//                telemetry.addData("Y",o.getY());
+//                telemetry.update();
+//
+//                findTag(tag);
+//                sleep(3000);
 
             }
 

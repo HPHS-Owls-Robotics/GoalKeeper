@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -42,7 +43,7 @@ public class Bot2MoveSys {
     private DcMotor BRMotor;
     private DcMotor Arm;
     private Servo trapdoor;
-    IMU imu;
+    BHI260IMU imu;
 
     OpticSys openCv;
     OpticSysAprilTag aprilTag;
@@ -64,15 +65,16 @@ public class Bot2MoveSys {
     public Bot2MoveSys(HardwareMap hardwareMap) {
         //openCv = new OpticSysOpenCV(hardwareMap);
         //aprilTag = new OpticSysAprilTag(hardwareMap);
-        imu =  hardwareMap.get(IMU.class, "imu");
+        imu =  hardwareMap.get(BHI260IMU.class, "imu");
 
-        IMU.Parameters parameters = new IMU.Parameters(
+        BHI260IMU.Parameters parameters = new BHI260IMU.Parameters(
                 new RevHubOrientationOnRobot(
                         RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
                 )
         );
 
-        imu.initialize(parameters);
+
+//        imu.initialize(parameters);
 
 
 
@@ -86,7 +88,7 @@ public class Bot2MoveSys {
 //        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 //
 //        imu = hardwareMap.get(BNO055IMU.class, "imu");
-//        imu.initialize(parameters);
+        imu.initialize(parameters);
 
         FLMotor = hardwareMap.dcMotor.get ("FL_Motor"); //check with driver hub
         FRMotor = hardwareMap.dcMotor.get("FR_Motor"); //check with driver hub
