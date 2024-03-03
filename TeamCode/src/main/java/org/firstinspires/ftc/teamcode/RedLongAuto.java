@@ -11,7 +11,7 @@ public class RedLongAuto extends LinearOpMode {
     int tag=0;
 
     int color =0;
-    int sleepTimer =3000;
+    int sleepTimer =1000;
     int scanTimer=3000;
     Bot2MoveSys m;
     ArmSys as;
@@ -44,16 +44,16 @@ public class RedLongAuto extends LinearOpMode {
             telemetry.addData("two", "moving right");
             telemetry.update();
             as.sweep1();
-            sleep(3000);
+            sleep(scanTimer);
 
                // m.right(48);
                 telemetry.addData("one", "moving right");
                 telemetry.update();
-                sleep(3000);
+                sleep(sleepTimer);
                 go= o.runRed();
                 telemetry.addData("two",go);
                 telemetry.update();
-                sleep(2000);
+                sleep(sleepTimer);
 
                 if(go==1)//leftmost, far from backboard
                 {
@@ -61,10 +61,10 @@ public class RedLongAuto extends LinearOpMode {
                     //sleep(3000);
 
                     as.sweep2();
-                    sleep(3000);
+                    sleep(sleepTimer);
 
                     m.forward(-18);
-                    sleep(3000);
+                    sleep(sleepTimer);
 
 
                 }
@@ -78,15 +78,15 @@ public class RedLongAuto extends LinearOpMode {
                 else if(go==3)//close to backboard
                 {
                     m.forward(-18);
-                    sleep(3000);
+                    sleep(sleepTimer);
                     as.sweep2();
-                    sleep(3000);
+                    sleep(sleepTimer);
 
 
                 }
 
                 m.forward(40);
-                sleep(3000);
+                sleep(sleepTimer);
                 o.closeOpenCV();
                 o.initAprilTags();
                 o.startAprilTags();
@@ -98,7 +98,7 @@ public class RedLongAuto extends LinearOpMode {
                 telemetry.update();
 
                 findTag(tag);
-                sleep(3000);
+                sleep(scanTimer);
 
             }
 
@@ -119,13 +119,13 @@ public class RedLongAuto extends LinearOpMode {
             else if(o.getTag()>t)
             {
                 m.right(10);
-                sleep(1000);
+                sleep(sleepTimer);
                 m.forward(20);
             }
             else if(o.getTag()<t)
             {
                 m.right(-10);
-                sleep(1000);
+                sleep(sleepTimer);
                 m.forward(20);
             }
 
