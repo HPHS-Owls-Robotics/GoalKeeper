@@ -207,8 +207,14 @@ public class Bot2DriverOp extends LinearOpMode {
             {
                 Belt.setPower(SPwr);
             }
+            if(!((gamepad2.dpad_up)||(gamepad1.right_bumper))){
+                Belt.setPower(0);
+            }
 
-            Belt.setPower(0);
+            if(gamepad2.dpad_down){
+                ARMotor.setPower(0.5);
+                ALMotor.setPower(0.5);
+            }
 //
 //            ARMotor.setPower(gamepad2.right_stick_y);
 //            ALMotor.setPower(gamepad2.left_stick_y);
