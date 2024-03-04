@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous
-public class park extends LinearOpMode{
+public class parkblue extends LinearOpMode{
 
     int tag=0;
 
@@ -19,10 +19,11 @@ public class park extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException {
 
-        m.right(5);
+        m.right(-5);
         sleep(3000);
         m.forward(84);
         sleep(5000);
+        as.trap();
 
 
 

@@ -46,7 +46,8 @@ public class RedLongAuto extends LinearOpMode {
             as.sweep1();
             sleep(3000);
 
-               // m.right(48);
+
+                m.right(55);
                 telemetry.addData("one", "moving right");
                 telemetry.update();
                 sleep(3000);
@@ -71,14 +72,6 @@ public class RedLongAuto extends LinearOpMode {
                 else if(go==2)//middle
                 {
 
-                    m.rotate(90);
-                    sleep(1000);
-                    as.sweep2();
-                    sleep(1000);
-                    m.rotate(-90);
-                    sleep(1000);
-
-
                 }
                 else if(go==3)//close to backboard
                 {
@@ -89,8 +82,8 @@ public class RedLongAuto extends LinearOpMode {
 
 
                 }
-                sleep(5000);
-                m.forward(84);
+//                sleep(5000);
+//                m.forward(84);
 
 //                m.forward(84);
 //                sleep(3000);

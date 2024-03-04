@@ -33,7 +33,8 @@ public class BlueLongAuto extends LinearOpMode {
         waitForStart();
         if(opModeIsActive())
         {
-           // m.rotate(10);
+
+           //m.right(-50);
             sleep(3000);
             go = o.runBlue();
             telemetry.addData("run", go);
@@ -47,7 +48,7 @@ public class BlueLongAuto extends LinearOpMode {
             as.sweep1();
             sleep(3000);
 
-            m.right(-52);
+            m.right(-55);
             telemetry.addData("one", "moving right");
             telemetry.update();
             sleep(3000);
@@ -72,13 +73,6 @@ public class BlueLongAuto extends LinearOpMode {
             else if(go==2)//middle
             {
 
-            m.rotate(90);
-            sleep(1000);
-            as.sweep2();
-            sleep(1000);
-            m.rotate(-90);
-            sleep(1000);
-
 
             }
             else if(go==3)//close to backboard
@@ -90,8 +84,10 @@ public class BlueLongAuto extends LinearOpMode {
 
 
             }
-
-            m.forward(84);
+//            m.right(-47);
+//            sleep(15000);
+//
+//            m.forward(84);
 //            sleep(3000);
 //            o.closeOpenCV();
 //            o.initAprilTags();

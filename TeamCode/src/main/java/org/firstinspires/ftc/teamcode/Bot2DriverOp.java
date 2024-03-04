@@ -53,16 +53,16 @@ public class Bot2DriverOp extends LinearOpMode {
         trapdoor = hardwareMap.servo.get("T_Servo");
 
 //speeds
-        float SPwr=2f, APwr, FLPwr,FRPwr,BLPwr,BRPwr,BPwr=10f;
+        float SPwr=1.5f, APwr, FLPwr,FRPwr,BLPwr,BRPwr,BPwr=10f;
         trapdoor.setPosition(0.0); //check
         APwr = 1f;
 //booleans
         boolean isBeamBroke;
 
-        FLMotor.setDirection(DcMotor.Direction.FORWARD);
-        FRMotor.setDirection(DcMotor.Direction.REVERSE);
-        BLMotor.setDirection(DcMotor.Direction.FORWARD);
-        BRMotor.setDirection(DcMotor.Direction.REVERSE);
+        FLMotor.setDirection(DcMotor.Direction.REVERSE);
+        FRMotor.setDirection(DcMotor.Direction.FORWARD);
+        BLMotor.setDirection(DcMotor.Direction.REVERSE);
+        BRMotor.setDirection(DcMotor.Direction.FORWARD);
 
 
 
@@ -92,10 +92,10 @@ public class Bot2DriverOp extends LinearOpMode {
             strafe = gamepad1.left_stick_x;
             rotate = gamepad1.right_stick_x;
 
-            FLPwr = (cfl)*(yleft + yright - strafe - rotate)/4f; //cfl for possible coeffs to deal with weight distr
-            FRPwr = (cfr)*(yleft + yright + strafe + rotate)/4f; //cfr for possible coeffs to deal with weight distr
-            BLPwr = (cbl)*(yleft + yright + strafe - rotate)/4f; //cbl for possible coeffs to deal with weight distr
-            BRPwr = (cbr)*(yleft + yright - strafe + rotate)/4f; //cbr for possible coeffs to deal with weight distr
+            FLPwr = (cfl)*(yleft + yright - strafe + rotate)/4f; //cfl for possible coeffs to deal with weight distr
+            FRPwr = (cfr)*(yleft + yright + strafe - rotate)/4f; //cfr for possible coeffs to deal with weight distr
+            BLPwr = (cbl)*(yleft + yright + strafe + rotate)/4f; //cbl for possible coeffs to deal with weight distr
+            BRPwr = (cbr)*(yleft + yright - strafe - rotate)/4f; //cbr for possible coeffs to deal with weight distr
 
             FLMotor.setPower(FLPwr);
             FRMotor.setPower(FRPwr);
@@ -161,7 +161,16 @@ public class Bot2DriverOp extends LinearOpMode {
             if(gamepad2.x)
             {
                 //drone
-                drone.setPosition(2f);
+
+                if(drone.getPosition()==2)
+                {
+                    drone.setPosition(0);
+                }
+                else
+                {
+                    drone.setPosition(2f);
+                }
+
             }
             if(gamepad2.y)
             {
