@@ -67,13 +67,16 @@ public class Bot2MoveSys {
         //aprilTag = new OpticSysAprilTag(hardwareMap);
         imu =  hardwareMap.get(BHI260IMU.class, "imu");
 
-        BHI260IMU.Parameters parameters = new BHI260IMU.Parameters(
+        IMU.Parameters myIMUparameters;
+
+        myIMUparameters = new IMU.Parameters(
                 new RevHubOrientationOnRobot(
-                        RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
+                        RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                        RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
                 )
         );
 
-
+        imu.initialize(myIMUparameters);
 //        imu.initialize(parameters);
 
 
@@ -88,7 +91,6 @@ public class Bot2MoveSys {
 //        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 //
 //        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
 
         FLMotor = hardwareMap.dcMotor.get ("FL_Motor"); //check with driver hub
         FRMotor = hardwareMap.dcMotor.get("FR_Motor"); //check with driver hub
@@ -341,5 +343,11 @@ public class Bot2MoveSys {
     public void getCalibrationStatus()
     {
         return;
+    }
+
+    public boolean isMoving()
+    {
+        return FLMotor.getPowerFloat()&& FRMotor.getPowerFloat();
+
     }
 }

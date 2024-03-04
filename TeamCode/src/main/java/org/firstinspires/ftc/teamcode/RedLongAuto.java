@@ -46,15 +46,24 @@ public class RedLongAuto extends LinearOpMode {
             as.sweep1();
             sleep(3000);
 
+            m.right(55);
+           // sleep(3000);
+            while(m.isMoving())
+            {
+                int count =0;
+                int g = o.runRed();
+                telemetry.addData("current", count);
+                telemetry.addData("go", g);
+                if(g!=2)
+                {
+                    go = g;
+                    break;
+                }
+                count+=1;
+            }
 
-                m.right(55);
-                telemetry.addData("one", "moving right");
-                telemetry.update();
-                sleep(3000);
-                go= o.runRed();
-                telemetry.addData("two",go);
-                telemetry.update();
-                sleep(2000);
+            sleep(3000);
+
 
                 if(go==1)//leftmost, far from backboard
                 {
