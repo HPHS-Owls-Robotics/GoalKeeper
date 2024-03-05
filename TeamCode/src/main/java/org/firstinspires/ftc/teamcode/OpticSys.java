@@ -25,6 +25,9 @@ public class OpticSys {
     ContourPipeline myPipeline1;
     ContourPipeline myPipeline2;
 
+    PropPipeline pipeLine;
+    OpenCvCamera.AsyncCameraOpenListener lis;
+
     AprilTagDetectionPipeline aprilPipeline;
 
     OpenCvCamera.AsyncCameraOpenListener listen1;
@@ -66,12 +69,45 @@ public class OpticSys {
                         OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
         //OpenCV Pipeline
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
-        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
+       // webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
+    }
+
+//    public void initPropPipeline()
+//    {
+//        pipeLine = new PropPipeline();
+//    }
+
+    public void startPropPipeline()
+    {
+        lis = new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                // webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam1.setPipeline(myPipeline1);
+                webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                /*
+                 * This will be called if the camera could not be opened
+                 */
+            }
+        };
+
+        webcam1.openCameraDeviceAsync(lis);
+    }
+
+    public Enum<Location> getPropLocation()
+    {
+        return pipeLine.getLocation();
     }
 
     public void initOpenCV() {
         myPipeline1 = new ContourPipeline(borderLeftX, borderRightX, borderTopY, borderBottomY);
         myPipeline2 = new ContourPipeline(borderLeftX, borderRightX, borderTopY, borderBottomY);
+
+
 
         // Configuration of Pipeline
         myPipeline1.configureScalarLower(scalarLowerYCrCb.val[0], scalarLowerYCrCb.val[1], scalarLowerYCrCb.val[2]);
@@ -133,13 +169,13 @@ public class OpticSys {
 
     public void startOpenCV() {
         webcam1.openCameraDeviceAsync(listen1);
-        webcam2.openCameraDeviceAsync(listen2);
+        //webcam2.openCameraDeviceAsync(listen2);
     }
 
     public void closeOpenCV()
     {
         webcam1.closeCameraDevice();
-        webcam2.closeCameraDevice();
+        //webcam2.closeCameraDevice();
       //  webcam1.closeCameraDeviceAsync(listenClose1); // Empty camera
       //  webcam2.closeCameraDeviceAsync(listenClose2);
     }
@@ -169,6 +205,8 @@ public class OpticSys {
     {
         webcam2.openCameraDeviceAsync(listen1a);
     }
+
+
 
 
 

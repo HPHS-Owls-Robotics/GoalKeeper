@@ -127,6 +127,8 @@ public class Skystone extends LinearOpMode
         static final int REGION_WIDTH = 600;
         static final int REGION_HEIGHT = 720;
 
+
+
         /*
          * Points which actually define the sample region rectangles, derived from above values
          *
@@ -205,6 +207,7 @@ public class Skystone extends LinearOpMode
              * buffer. Any changes to the child affect the parent, and the
              * reverse also holds true.
              */
+            inputToCb(firstFrame);
 
             region1_R = R.submat(new Rect(region1_pointA, region1_pointB));
             region2_R = R.submat(new Rect(region2_pointA, region2_pointB));
@@ -212,6 +215,8 @@ public class Skystone extends LinearOpMode
 
 
         }
+
+
 
         @Override
         public Mat processFrame(Mat input)
@@ -254,90 +259,90 @@ public class Skystone extends LinearOpMode
             /*
              * Get the Cb channel of the input frame after conversion to YCrCb
              */
-//            inputToCb(input);
-//
-//            /*
-//             * Compute the average pixel value of each submat region. We're
-//             * taking the average of a single channel buffer, so the value
-//             * we need is at index 0. We could have also taken the average
-//             * pixel value of the 3-channel image, and referenced the value
-//             * at index 2 here.
-//             */
-//            avg1R = (int) Core.mean(region1_R).val[0];
-//            avg2R = (int) Core.mean(region2_R).val[0];
-//            //avg3R = (int) Core.mean(region3_R).val[0];
-//
-//
+            inputToCb(input);
+
+            /*
+             * Compute the average pixel value of each submat region. We're
+             * taking the average of a single channel buffer, so the value
+             * we need is at index 0. We could have also taken the average
+             * pixel value of the 3-channel image, and referenced the value
+             * at index 2 here.
+             */
+            avg1R = (int) Core.mean(region1_R).val[0];
+            avg2R = (int) Core.mean(region2_R).val[0];
+            //avg3R = (int) Core.mean(region3_R).val[0];
+
+
+            Imgproc.rectangle(
+                    input, // Buffer to draw on
+                    region1_pointA, // First point which defines the rectangle
+                    region1_pointB, // Second point which defines the rectangle
+                    BLUE, // The color the rectangle is drawn in
+                    2); // Thickness of the rectangle lines
+
+            /*
+             * Draw a rectangle showing sample region 2 on the screen.
+             * Simply a visual aid. Serves no functional purpose.
+             */
+            Imgproc.rectangle(
+                    input, // Buffer to draw on
+                    region2_pointA, // First point which defines the rectangle
+                    region2_pointB, // Second point which defines the rectangle
+                    BLUE, // The color the rectangle is drawn in
+                    2); // Thickness of the rectangle lines
+
+            /*
+             * Draw a rectangle showing sample region 3 on the screen.
+             * Simply a visual aid. Serves no functional purpose.
+             */
 //            Imgproc.rectangle(
 //                    input, // Buffer to draw on
-//                    region1_pointA, // First point which defines the rectangle
-//                    region1_pointB, // Second point which defines the rectangle
+//                    //region3_pointA, // First point which defines the rectangle
+//                    //region3_pointB, // Second point which defines the rectangle
 //                    BLUE, // The color the rectangle is drawn in
 //                    2); // Thickness of the rectangle lines
-//
-//            /*
-//             * Draw a rectangle showing sample region 2 on the screen.
-//             * Simply a visual aid. Serves no functional purpose.
-//             */
-//            Imgproc.rectangle(
-//                    input, // Buffer to draw on
-//                    region2_pointA, // First point which defines the rectangle
-//                    region2_pointB, // Second point which defines the rectangle
-//                    BLUE, // The color the rectangle is drawn in
-//                    2); // Thickness of the rectangle lines
-//
-//            /*
-//             * Draw a rectangle showing sample region 3 on the screen.
-//             * Simply a visual aid. Serves no functional purpose.
-//             */
-////            Imgproc.rectangle(
-////                    input, // Buffer to draw on
-////                    //region3_pointA, // First point which defines the rectangle
-////                    //region3_pointB, // Second point which defines the rectangle
-////                    BLUE, // The color the rectangle is drawn in
-////                    2); // Thickness of the rectangle lines
-//
-//
-//            /*
-//             * Find the max of the 3 averages
-//             */
-//            int maxOneTwo = Math.max(avg1R, avg2R);
-//            int max = Math.max(maxOneTwo, avg3R);
-//
-//            /*
-//             * Now that we found the max, we actually need to go and
-//             * figure out which sample region that value was from
-//             */
-//            if(max == avg1R) // Was it from region 1?
-//            {
-//                position = SkystonePosition.LEFT; // Record our analysis
-//
-//                /*
-//                 * Draw a solid rectangle on top of the chosen region.
-//                 * Simply a visual aid. Serves no functional purpose.
-//                 */
-//                Imgproc.rectangle(
-//                        input, // Buffer to draw on
-//                        region1_pointA, // First point which defines the rectangle
-//                        region1_pointB, // Second point which defines the rectangle
-//                        GREEN, // The color the rectangle is drawn in
-//                        -1); // Negative thickness means solid fill
-//            }
-//            else if(max == avg2R) // Was it from region 2?
-//            {
-//                position = SkystonePosition.CENTER; // Record our analysis
-//
-//                /*
-//                 * Draw a solid rectangle on top of the chosen region.
-//                 * Simply a visual aid. Serves no functional purpose.
-//                 */
-//                Imgproc.rectangle(
-//                        input, // Buffer to draw on
-//                        region2_pointA, // First point which defines the rectangle
-//                        region2_pointB, // Second point which defines the rectangle
-//                        GREEN, // The color the rectangle is drawn in
-//                        -1); // Negative thickness means solid fill
-//            }
+
+
+            /*
+             * Find the max of the 3 averages
+             */
+            int maxOneTwo = Math.max(avg1R, avg2R);
+            int max = Math.max(maxOneTwo, avg3R);
+
+            /*
+             * Now that we found the max, we actually need to go and
+             * figure out which sample region that value was from
+             */
+            if(max == avg1R) // Was it from region 1?
+            {
+                position = SkystonePosition.LEFT; // Record our analysis
+
+                /*
+                 * Draw a solid rectangle on top of the chosen region.
+                 * Simply a visual aid. Serves no functional purpose.
+                 */
+                Imgproc.rectangle(
+                        input, // Buffer to draw on
+                        region1_pointA, // First point which defines the rectangle
+                        region1_pointB, // Second point which defines the rectangle
+                        GREEN, // The color the rectangle is drawn in
+                        -1); // Negative thickness means solid fill
+            }
+            else if(max == avg2R) // Was it from region 2?
+            {
+                position = SkystonePosition.CENTER; // Record our analysis
+
+                /*
+                 * Draw a solid rectangle on top of the chosen region.
+                 * Simply a visual aid. Serves no functional purpose.
+                 */
+                Imgproc.rectangle(
+                        input, // Buffer to draw on
+                        region2_pointA, // First point which defines the rectangle
+                        region2_pointB, // Second point which defines the rectangle
+                        GREEN, // The color the rectangle is drawn in
+                        -1); // Negative thickness means solid fill
+            }
 //            else if(max == avg3R) // Was it from region 3?
 //            {
 //                position = SkystonePosition.RIGHT; // Record our analysis

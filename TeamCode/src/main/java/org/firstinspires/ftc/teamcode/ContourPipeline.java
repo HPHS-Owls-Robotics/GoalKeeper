@@ -39,6 +39,14 @@ public class ContourPipeline extends OpenCvPipeline {
     public static Scalar scalarUpperYCrCb = new Scalar(255.0, 255.0, 255.0);
     Scalar HOT_PINK = new Scalar(196, 23, 112);
 
+
+    // region heights
+
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,0);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(400,0);
+    static final int REGION_WIDTH = 400;
+    static final int REGION_HEIGHT = 720;
+
     // Pink, the default color                         Y      Cr     Cb    (Do not change Y)
 
     // Yellow, freight or ducks!
@@ -70,6 +78,29 @@ public class ContourPipeline extends OpenCvPipeline {
 
     private final Object sync = new Object();
 
+    Mat region1_R, region2_R, region3_R;
+
+    Mat R = new Mat();
+    static final Scalar BLUE = new Scalar(0, 0, 255);
+    static final Scalar GREEN = new Scalar(0, 255, 0);
+
+
+    Point region1_pointA = new Point(
+            REGION1_TOPLEFT_ANCHOR_POINT.x,
+            REGION1_TOPLEFT_ANCHOR_POINT.y);
+    Point region1_pointB = new Point(
+            REGION1_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
+            REGION1_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
+    Point region2_pointA = new Point(
+            REGION2_TOPLEFT_ANCHOR_POINT.x,
+            REGION2_TOPLEFT_ANCHOR_POINT.y);
+    Point region2_pointB = new Point(
+            REGION2_TOPLEFT_ANCHOR_POINT.x + REGION_WIDTH,
+            REGION2_TOPLEFT_ANCHOR_POINT.y + REGION_HEIGHT);
+
+     //The core values which define the location and size of the sample regions
+
+
     public ContourPipeline(double borderLeftX, double borderRightX, double borderTopY, double borderBottomY) {
         this.borderLeftX = borderLeftX;
         this.borderRightX = borderRightX;
@@ -97,6 +128,17 @@ public class ContourPipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+
+
+        Imgproc.rectangle(
+                input, // Buffer to draw on
+                region2_pointA, // First point which defines the rectangle
+                region2_pointB, // Second point which defines the rectangle
+                BLUE, // The color the rectangle is drawn in
+                2);
+
+        region1_R = R.submat(new Rect(region1_pointA, region1_pointB));
+        region2_R = R.submat(new Rect(region2_pointA, region2_pointB));
         CAMERA_WIDTH = input.width();
         CAMERA_HEIGHT = input.height();
         try {
@@ -179,6 +221,8 @@ public class ContourPipeline extends OpenCvPipeline {
         }
         return input;
     }
+
+
     /*
     Synchronize these operations as the user code could be incorrect otherwise, i.e a property is read
     while the same rectangle is being processed in the pipeline, leading to some values being not

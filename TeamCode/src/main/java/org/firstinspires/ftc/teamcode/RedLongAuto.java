@@ -15,128 +15,57 @@ public class RedLongAuto extends LinearOpMode {
     int scanTimer=3000;
     Bot2MoveSys m;
     ArmSys as;
-    OpticSys o;
+    OpticSysProp o;
+
+
 
     @Override
     public void runOpMode() throws InterruptedException {
-        telemetry.addData("one", "moving right");
-        telemetry.update();
-        m= new Bot2MoveSys(hardwareMap);
-        as = new ArmSys(hardwareMap);
-        //a= new EOCVAPRILTAGS(hardwareMap);
-        o= new OpticSys(hardwareMap,0);
-        //a.initAprilTag();
-
-        //m.rotate(90);
-
-        int tag=0;
-        int go=0;
-        telemetry.addData("one", "moving right");
-        telemetry.update();
-        o.initOpenCV(); // set hardwaremap, ie set cameras
-        o.startOpenCV();// start streaming, set pipeline
+        o= new OpticSysProp(hardwareMap);
+        o.initProp();
 
 
         waitForStart();
         if(opModeIsActive())
         {
-            //m.rotate(5);
-            telemetry.addData("two", "moving right");
-            telemetry.update();
-            as.sweep1();
+
             sleep(3000);
 
-            m.right(55);
-           // sleep(3000);
-            while(m.isMoving())
+            while(opModeIsActive())
             {
-                int count =0;
-                int g = o.runRed();
-                telemetry.addData("current", count);
-                telemetry.addData("go", g);
-                if(g!=2)
-                {
-                    go = g;
-                    break;
-                }
-                count+=1;
+
+                telemetry.addData("", o.getLocation());
+                telemetry.update();
             }
 
-            sleep(3000);
 
-
-                if(go==1)//leftmost, far from backboard
-                {
-                   // m.forward(18);
-                    //sleep(3000);
-
-                    as.sweep2();
-                    sleep(3000);
-
-                    m.forward(-18);
-                    sleep(3000);
-
-
-                }
-                else if(go==2)//middle
-                {
-
-                }
-                else if(go==3)//close to backboard
-                {
-                    m.forward(-18);
-                    sleep(3000);
-                    as.sweep2();
-                    sleep(3000);
-
-
-                }
-//                sleep(5000);
-//                m.forward(84);
-
-//                m.forward(84);
-//                sleep(3000);
-//                o.closeOpenCV();
-//                o.initAprilTags();
-//                o.startAprilTags();
-//
-//                o.getTag();
-//                telemetry.addData("tag",o.getTag());
-//                telemetry.addData("X",o.getX());
-//                telemetry.addData("Y",o.getY());
-//                telemetry.update();
-//
-//                findTag(tag);
-//                sleep(3000);
-
-            }
-
+        }
 
     }
 
         public void findTag(int t)
         {
-            if(color!=1)
-            {
-                t+=3;
-            }
-
-            if(o.getTag()==t)
-            {
-                m.forward(20);
-            }
-            else if(o.getTag()>t)
-            {
-                m.right(10);
-                sleep(1000);
-                m.forward(20);
-            }
-            else if(o.getTag()<t)
-            {
-                m.right(-10);
-                sleep(1000);
-                m.forward(20);
-            }
+//            if(color!=1)
+//            {
+//                t+=3;
+//            }
+//
+//            if(o.getTag()==t)
+//            {
+//                m.forward(20);
+//            }
+//            else if(o.getTag()>t)
+//            {
+//                m.right(10);
+//                sleep(1000);
+//                m.forward(20);
+//            }
+//            else if(o.getTag()<t)
+//            {
+//                m.right(-10);
+//                sleep(1000);
+//                m.forward(20);
+//            }
 
         }
 
