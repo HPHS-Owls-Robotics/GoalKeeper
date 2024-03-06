@@ -18,17 +18,17 @@ import org.opencv.imgproc.Imgproc;
 public class PropPipeline implements VisionProcessor {
     private static final boolean DEBUG = false;
     public static int redLeftX = (int) (0);
-    public static int redLeftY = (int) (550);
-    public static int redCenterX = (int) (600);
-    public static int redCenterY = (int) (550);
+    public static int redLeftY = (int) (100);
+    public static int redCenterX = (int) (150);
+    public static int redCenterY = (int) (100);
     public static int blueLeftX = (int) (240);
     public static int blueLeftY = (int) (525);
     public static int blueCenterX = (int) (925);
     public static int blueCenterY = (int) (485);
-    public static int leftWidth = (int) (600);
-    public static int leftHeight = (int) (700);
-    public static int centerWidth = (int) (600);
-    public static int centerHeight = (int) (700);
+    public static int leftWidth = (int) (75);
+    public static int leftHeight = (int) (75);
+    public static int centerWidth = (int) (75);
+    public static int centerHeight = (int) (75);
     public static double BLUE_TRESHOLD = 100;
     public static double RED_TRESHOLD = 10;
     private final Mat hsv = new Mat();
@@ -70,21 +70,20 @@ public class PropPipeline implements VisionProcessor {
             centerZoneArea = new Rect(blueCenterX, blueCenterY, centerWidth, centerHeight);
         }
 
-        Mat leftZone = frame.submat(new Rect(5,5,5,5));
-        Mat centerZone = frame.submat(new Rect(10,10,5,5));
-        Imgproc.rectangle(frame, new Rect(50,50,150,150), new Scalar(0,255,0), -1); // Negative thickness means solid fill
-        //Imgproc.rectangle(frame, new Rect(0,300,150,300), new Scalar(0, 255, 0), 20);
-        //Imgproc.rectangle(frame, new Rect(0,300,150,300), new Scalar(0, 255, 0), 20);
+        Mat leftZone = frame.submat(leftZoneArea);
+        Mat centerZone = frame.submat(centerZoneArea);
+        //Imgproc.rectangle(frame, new Rect(50,50,150,150), new Scalar(0,255,0), -1); // Negative thickness means solid fill
+//        Imgproc.rectangle(frame, new Rect(0,0,150,300), new Scalar(0, 255, 0), 20);
+//        Imgproc.rectangle(frame, new Rect(0,300,150,300), new Scalar(0, 255, 0), 20);
         if (DEBUG) {
             Imgproc.blur(frame, frame, new Size(5, 5));
             Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 2);
             Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255), 2);
         }
-        Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 5);
-        Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255), 5);
-
-        Imgproc.blur(leftZone, leftZone, new Size(5, 5));
-        Imgproc.blur(centerZone, centerZone, new Size(5, 5));
+        Imgproc.rectangle(frame, leftZoneArea, new Scalar(0, 255, 0), 5);
+        Imgproc.rectangle(frame, centerZoneArea, new Scalar(0, 0, 255), 5);
+//        Imgproc.blur(leftZone, leftZone, new Size(5, 5));
+//        Imgproc.blur(centerZone, centerZone, new Size(5, 5));
 
         left = Core.mean(leftZone);
         center = Core.mean(centerZone);
@@ -102,23 +101,32 @@ public class PropPipeline implements VisionProcessor {
         leftColor = left.val[idx];
         centerColor = center.val[idx];
 
-        if(leftColor>threshold)
+        if(left.val[0]>left.val[1]+left.val[2]&&left.val[0]>=threshold)
         {
             location=Location.LEFT;
+            Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 10);
         }
-
-        if (leftColor > threshold && (left.val[0] + left.val[1] + left.val[2] - left.val[idx] < left.val[idx])) {
-            // left zone has it
-            location = Location.LEFT;
-            //Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 10);*************************
-        } else if (centerColor > threshold && (center.val[0] + center.val[1] + center.val[2] - center.val[idx] < center.val[idx])) {
-            // center zone has it
+        else if(center.val[0]>center.val[1]+center.val[2]&&center.val[0]>=threshold)
+        {
             location = Location.CENTER;
-            //Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255), 10);*************
-        } else {
-            // right zone has it
+        }
+        else
+        {
             location = Location.RIGHT;
         }
+
+//        if (leftColor > threshold && (left.val[0] + left.val[1] + left.val[2] - left.val[idx] < left.val[idx])) {
+//            // left zone has it
+//            location = Location.LEFT;
+//            //Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 10);*************************
+//        } else if (centerColor > threshold && (center.val[0] + center.val[1] + center.val[2] - center.val[idx] < center.val[idx])) {
+//            // center zone has it
+//            location = Location.CENTER;
+//            //Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255), 10);*************
+//        } else {
+//            // right zone has it
+//            location = Location.RIGHT;
+//        }
 
         leftZone.release();
         centerZone.release();

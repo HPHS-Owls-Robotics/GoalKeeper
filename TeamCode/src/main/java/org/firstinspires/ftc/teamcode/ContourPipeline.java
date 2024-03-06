@@ -18,6 +18,18 @@ import java.util.List;
 
 public class ContourPipeline extends OpenCvPipeline {
 
+    public static int redLeftX = (int) (0);
+    public static int redLeftY = (int) (100);
+    public static int redCenterX = (int) (150);
+    public static int redCenterY = (int) (100);
+    public static int blueLeftX = (int) (240);
+    public static int blueLeftY = (int) (525);
+    public static int blueCenterX = (int) (925);
+    public static int blueCenterY = (int) (485);
+    public static int leftWidth = (int) (75);
+    public static int leftHeight = (int) (75);
+    public static int centerWidth = (int) (75);
+    public static int centerHeight = (int) (75);
     private static int CAMERA_WIDTH  = 640; // width  of wanted camera resolution
     private static int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
@@ -69,11 +81,15 @@ public class ContourPipeline extends OpenCvPipeline {
     private int pLoopCounter = 0;
 
     private final Mat mat = new Mat();
+    private final Mat mat1 = new Mat();
     private final Mat processed = new Mat();
+    private final Mat processed1 = new Mat();
 
     private Rect maxRect = new Rect(600,1,1,1);
+    private Rect maxRect1 = new Rect(600,1,1,1);
 
     private double maxArea = 0;
+    private double maxArea1 = 0;
     private boolean first = false;
 
     private final Object sync = new Object();
@@ -128,22 +144,29 @@ public class ContourPipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+        Rect leftZoneArea;
+        Rect centerZoneArea;
 
 
-        Imgproc.rectangle(
-                input, // Buffer to draw on
-                region2_pointA, // First point which defines the rectangle
-                region2_pointB, // Second point which defines the rectangle
-                BLUE, // The color the rectangle is drawn in
-                2);
+        leftZoneArea = new Rect(redLeftX, redLeftY, leftWidth, leftHeight);
+        centerZoneArea = new Rect(redCenterX, redCenterY, centerWidth, centerHeight);
 
-        region1_R = R.submat(new Rect(region1_pointA, region1_pointB));
-        region2_R = R.submat(new Rect(region2_pointA, region2_pointB));
+
+
+        Mat leftZone = input.submat(leftZoneArea);
+        Mat centerZone = input.submat(centerZoneArea);
+
+
+
+
         CAMERA_WIDTH = input.width();
         CAMERA_HEIGHT = input.height();
-        try {
+
+
+
+                    try {
             // Process Image
-            Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2YCrCb);
+            Imgproc.cvtColor(leftZone, mat, Imgproc.COLOR_RGB2YCrCb);
             Core.inRange(mat, scalarLowerYCrCb, scalarUpperYCrCb, processed);
             // Remove Noise
             Imgproc.morphologyEx(processed, processed, Imgproc.MORPH_OPEN, new Mat());
@@ -155,7 +178,7 @@ public class ContourPipeline extends OpenCvPipeline {
             Imgproc.findContours(processed, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
             // Draw Contours
-            Imgproc.drawContours(input, contours, -1, new Scalar(255, 0, 0));
+            Imgproc.drawContours(leftZone, contours, -1, new Scalar(255, 0, 0));
 
             // Lock this up to prevent errors when outside threads access the max rect property.
             synchronized (sync) {
@@ -201,24 +224,97 @@ public class ContourPipeline extends OpenCvPipeline {
             }
             // Draw Rectangles If Area Is At Least 500
             if (first && maxRect.area() > 500) {
-                Imgproc.rectangle(input, maxRect, new Scalar(0, 255, 0), 2);
+                Imgproc.rectangle(leftZone, maxRect, new Scalar(0, 255, 0), 2);
             }
             // Draw Borders
-            Imgproc.rectangle(input, new Rect(
+            Imgproc.rectangle(leftZone, new Rect(
                     (int) (borderLeftX * CAMERA_WIDTH),
                     (int) (borderTopY * CAMERA_HEIGHT),
                     (int) (CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH) - (borderLeftX * CAMERA_WIDTH)),
                     (int) (CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT) - (borderTopY * CAMERA_HEIGHT))
             ), HOT_PINK, 2);
 
-            // Display Data
-            Imgproc.putText(input, "Area: " + getRectArea() + " Midpoint: " + getRectMidpointXY().x + " , " + getRectMidpointXY().y, new Point(5, CAMERA_HEIGHT - 5), 0, 0.6, new Scalar(255, 255, 255), 2);
 
-            loopCounter++;
+            // Process Image
+            Imgproc.cvtColor(centerZone, mat1, Imgproc.COLOR_RGB2YCrCb);
+            Core.inRange(mat1, scalarLowerYCrCb, scalarUpperYCrCb, processed);
+            // Remove Noise
+            Imgproc.morphologyEx(processed, processed, Imgproc.MORPH_OPEN, new Mat());
+            Imgproc.morphologyEx(processed, processed, Imgproc.MORPH_CLOSE, new Mat());
+            // GaussianBlur
+            Imgproc.GaussianBlur(processed, processed, new Size(5.0, 15.0), 0.00);
+            // Find Contours
+            List<MatOfPoint> contours1 = new ArrayList<>();
+            Imgproc.findContours(processed, contours1, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            // Draw Contours
+            Imgproc.drawContours(centerZone, contours1, -1, new Scalar(255, 0, 0));
+
+            // Lock this up to prevent errors when outside threads access the max rect property.
+            synchronized (sync) {
+                // Loop Through Contours
+                for (MatOfPoint contour : contours1) {
+                    Point[] contourArray = contour.toArray();
+
+                    // Bound Rectangle if Contour is Large Enough
+                    if (contourArray.length >= 15) {
+                        MatOfPoint2f areaPoints = new MatOfPoint2f(contourArray);
+                        Rect rect = Imgproc.boundingRect(areaPoints);
+
+                        if (                        rect.area() > maxArea
+                                && rect.x + (rect.width / 2.0)  > (borderLeftX * CAMERA_WIDTH)
+                                && rect.x + (rect.width / 2.0)  < CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH)
+                                && rect.y + (rect.height / 2.0) > (borderTopY * CAMERA_HEIGHT)
+                                && rect.y + (rect.height / 2.0) < CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT)
+
+                                || loopCounter - pLoopCounter   > 6
+                                && rect.x + (rect.width / 2.0)  > (borderLeftX * CAMERA_WIDTH)
+                                && rect.x + (rect.width / 2.0)  < CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH)
+                                && rect.y + (rect.height / 2.0) > (borderTopY * CAMERA_HEIGHT)
+                                && rect.y + (rect.height / 2.0) < CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT)
+                        ){
+                            maxArea1 = rect.area();
+                            maxRect1 = rect;
+                            pLoopCounter++;
+                            loopCounter = pLoopCounter;
+                            first = true;
+                        }
+                        else if(loopCounter - pLoopCounter > 10){
+                            maxArea1 = new Rect().area();
+                            maxRect1 = new Rect();
+                        }
+
+                        areaPoints.release();
+                    }
+                    contour.release();
+                }
+                if (contours1.isEmpty()) {
+                    maxRect1 = new Rect(600,1,1,1);
+                }
+            }
+            // Draw Rectangles If Area Is At Least 500
+            if (first && maxRect1.area() > 500) {
+                Imgproc.rectangle(centerZone, maxRect, new Scalar(0, 255, 0), 2);
+            }
+            // Draw Borders
+            Imgproc.rectangle(centerZone, new Rect(
+                    (int) (borderLeftX * CAMERA_WIDTH),
+                    (int) (borderTopY * CAMERA_HEIGHT),
+                    (int) (CAMERA_WIDTH - (borderRightX * CAMERA_WIDTH) - (borderLeftX * CAMERA_WIDTH)),
+                    (int) (CAMERA_HEIGHT - (borderBottomY * CAMERA_HEIGHT) - (borderTopY * CAMERA_HEIGHT))
+            ), HOT_PINK, 2);
+
+
+
+
+                        // Display Data
+            //Imgproc.putText(input, "Area: " + getRectArea() + " Midpoint: " + getRectMidpointXY().x + " , " + getRectMidpointXY().y, new Point(5, CAMERA_HEIGHT - 5), 0, 0.6, new Scalar(255, 255, 255), 2);
+
         } catch (Exception e) {
             debug = e;
             error = true;
         }
+
         return input;
     }
 
@@ -228,6 +324,20 @@ public class ContourPipeline extends OpenCvPipeline {
     while the same rectangle is being processed in the pipeline, leading to some values being not
     synced.
      */
+
+
+    public int getLocation()
+    {
+        if(maxRect.height>20||maxRect1.height>20)
+        {
+            if(maxRect.area()>maxRect1.area())
+            {
+                return 0;
+            }
+            else return 1;
+        }
+        return 2;
+    }
 
     public int getRectHeight() {
         synchronized (sync) {

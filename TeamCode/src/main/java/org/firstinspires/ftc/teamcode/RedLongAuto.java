@@ -15,26 +15,28 @@ public class RedLongAuto extends LinearOpMode {
     int scanTimer=3000;
     Bot2MoveSys m;
     ArmSys as;
-    OpticSysProp o;
+    OpticSysPhonecam o;
 
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        o= new OpticSysProp(hardwareMap);
-        o.initProp();
+        o= new OpticSysPhonecam(hardwareMap,0);
+        o.initOpenCV();
+        o.startOpenCV();
 
 
         waitForStart();
         if(opModeIsActive())
         {
 
-            sleep(3000);
+            //sleep(3000);
 
             while(opModeIsActive())
             {
+                sleep(1000);
+                telemetry.addData("location", o.getLocation());
 
-                telemetry.addData("", o.getLocation());
                 telemetry.update();
             }
 

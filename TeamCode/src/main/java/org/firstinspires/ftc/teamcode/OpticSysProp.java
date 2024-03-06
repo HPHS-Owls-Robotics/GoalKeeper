@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 import android.util.Size;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.opencv.core.Scalar;
+
 public class OpticSysProp {
 
     HardwareMap hardwareMap;
@@ -40,6 +39,15 @@ public class OpticSysProp {
     {
         return propPipeline.getLocation();
     }
+    public Scalar getCenter()
+    {
+        return  propPipeline.getCenter();
 
+    }
+    public Scalar getLeft()
+    {
+        return  propPipeline.getLeft();
+
+    }
 
 }
