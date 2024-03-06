@@ -129,21 +129,6 @@ public class OpticSysPhonecam {
                  */
             }
         };
-////        listen2 = new OpenCvCamera.AsyncCameraOpenListener() {
-////            @Override
-////            public void onOpened() {
-////                // webcam1.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-////                webcam2.setPipeline(myPipeline2);
-////                webcam2.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-////            }
-////
-////            @Override
-////            public void onError(int errorCode) {
-////                /*
-////                 * This will be called if the camera could not be opened
-////                 */
-////            }
-//        };
         listenClose1 = new OpenCvCamera.AsyncCameraCloseListener() {
             @Override
             public void onClose() {
@@ -211,10 +196,6 @@ public class OpticSysPhonecam {
     }
 
 
-
-
-
-
     public int getTag()
     {
         ArrayList<AprilTagDetection> currentDetections = aprilPipeline.getLatestDetections();
@@ -248,56 +229,56 @@ public class OpticSysPhonecam {
         else
             return currentDetections.get(0).pose.y;
     }
-
-
-    public int runRed()
-    {
-        myPipeline1.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
-        myPipeline2.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
-        if(myPipeline1.error){
-            return -1;
-        }
-        // Only use this line of the code when you want to find the lower and upper values
-        //testing(myPipeline1);
-        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 100 ){
-
-            if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
-                return 3;// rightmost=6
-            }
-            if(myPipeline2.getRectArea()>myPipeline1.getRectArea())
-            {
-                return 1;// leftmost=4
-
-            }
-        }
-        return 2; // middle=4
-
-        //return myPipeline1.getRectHeight();
-    }
-    public int runBlue()
-    {
-        myPipeline1.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
-        myPipeline2.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
-        if(myPipeline1.error){
-            return -1;
-        }
-        // Only use this line of the code when you want to find the lower and upper values
-        //testing(myPipeline1);
-        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 100 ){
-
-            if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
-                return 3;// rightmost=6
-            }
-            if(myPipeline2.getRectArea()>myPipeline1.getRectArea())
-            {
-                return 1;// leftmost=4
-
-            }
-        }
-        return 2; // middle=4
-
-        //return myPipeline1.getRectHeight();
-    }
+//
+//
+//    public int runRed()
+//    {
+//        myPipeline1.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+//        myPipeline2.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+//        if(myPipeline1.error){
+//            return -1;
+//        }
+//        // Only use this line of the code when you want to find the lower and upper values
+//        //testing(myPipeline1);
+//        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 100 ){
+//
+//            if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
+//                return 3;// rightmost=6
+//            }
+//            if(myPipeline2.getRectArea()>myPipeline1.getRectArea())
+//            {
+//                return 1;// leftmost=4
+//
+//            }
+//        }
+//        return 2; // middle=4
+//
+//        //return myPipeline1.getRectHeight();
+//    }
+//    public int runBlue()
+//    {
+//        myPipeline1.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+//        myPipeline2.configureBorders(borderLeftX, borderRightX, borderTopY, borderBottomY);
+//        if(myPipeline1.error){
+//            return -1;
+//        }
+//        // Only use this line of the code when you want to find the lower and upper values
+//        //testing(myPipeline1);
+//        if(myPipeline1.getRectHeight() > 200 || myPipeline2.getRectHeight() > 100 ){
+//
+//            if(myPipeline1.getRectArea()>myPipeline2.getRectArea()){
+//                return 3;// rightmost=6
+//            }
+//            if(myPipeline2.getRectArea()>myPipeline1.getRectArea())
+//            {
+//                return 1;// leftmost=4
+//
+//            }
+//        }
+//        return 2; // middle=4
+//
+//        //return myPipeline1.getRectHeight();
+//    }
     public double getA1()
     {
         return myPipeline1.getRectArea();

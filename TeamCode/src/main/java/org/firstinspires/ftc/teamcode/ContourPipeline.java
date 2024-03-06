@@ -19,17 +19,17 @@ import java.util.List;
 public class ContourPipeline extends OpenCvPipeline {
 
     public static int redLeftX = (int) (0);
-    public static int redLeftY = (int) (100);
-    public static int redCenterX = (int) (150);
-    public static int redCenterY = (int) (100);
+    public static int redLeftY = (int) (0);
+    public static int redCenterX = (int) (100);
+    public static int redCenterY = (int) (0);
     public static int blueLeftX = (int) (240);
     public static int blueLeftY = (int) (525);
     public static int blueCenterX = (int) (925);
     public static int blueCenterY = (int) (485);
-    public static int leftWidth = (int) (75);
-    public static int leftHeight = (int) (75);
-    public static int centerWidth = (int) (75);
-    public static int centerHeight = (int) (75);
+    public static int leftWidth = (int) (100);
+    public static int leftHeight = (int) (200);
+    public static int centerWidth = (int) (120);
+    public static int centerHeight = (int) (200);
     private static int CAMERA_WIDTH  = 640; // width  of wanted camera resolution
     private static int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
@@ -223,7 +223,7 @@ public class ContourPipeline extends OpenCvPipeline {
                 }
             }
             // Draw Rectangles If Area Is At Least 500
-            if (first && maxRect.area() > 500) {
+            if (first && maxRect.area() > 200) {
                 Imgproc.rectangle(leftZone, maxRect, new Scalar(0, 255, 0), 2);
             }
             // Draw Borders
@@ -293,7 +293,7 @@ public class ContourPipeline extends OpenCvPipeline {
                 }
             }
             // Draw Rectangles If Area Is At Least 500
-            if (first && maxRect1.area() > 500) {
+            if (first && maxRect1.area() > 200) {
                 Imgproc.rectangle(centerZone, maxRect, new Scalar(0, 255, 0), 2);
             }
             // Draw Borders
